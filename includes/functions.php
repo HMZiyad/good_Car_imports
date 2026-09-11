@@ -4,9 +4,12 @@
  */
 
 /**
- * Sanitize user input to prevent XSS
+ * Sanitize output to prevent XSS
  */
-function sanitize(string $input): string {
+function sanitize(?string $input): string {
+    if ($input === null) {
+        return '';
+    }
     return htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8');
 }
 
@@ -104,6 +107,77 @@ function getStatusBadge(string $status): string {
 
     $badge = $badges[$status] ?? ['Unknown', 'status-default'];
     return sprintf('<span class="status-badge %s">%s</span>', $badge[1], $badge[0]);
+}
+
+/**
+ * Send an email using PHPMailer and database settings.
+ *
+ * @param string $to Email address to send to.
+ * @param string $subject Subject of the email.
+ * @param string $body HTML body of the email.
+ * @param string|null $replyTo Optional reply-to address.
+ * @return bool True on success, false on failure.
+ */
+function sendEmail(string $to, string $subject, string $body, ?string $replyTo = null): bool {
+    // Autoload PHPMailer if installed via Composer
+    $vendorAutoload = dirname(__DIR__) . '/vendor/autoload.php';
+    if (!file_exists($vendorAutoload)) {
+        error_log('sendEmail Error: Composer autoload not found. PHPMailer is required.');
+        return false;
+    }
+    require_once $vendorAutoload;
+
+    $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+
+    try {
+        $host = getSetting('smtp_host');
+        $port = getSetting('smtp_port');
+        $username = getSetting('smtp_username');
+        $password = getSetting('smtp_password');
+        $fromEmail = getSetting('smtp_from_email');
+        $fromName = getSetting('smtp_from_name', 'Good Car Imports');
+
+        if (empty($host) || empty($username) || empty($password)) {
+            error_log('sendEmail Error: SMTP settings are incomplete.');
+            return false;
+        }
+
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host       = $host;
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $username;
+        $mail->Password   = $password;
+        
+        // TLS or SSL based on port
+        if ((int)$port === 465) {
+            $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+        } else {
+            $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+        }
+        
+        $mail->Port       = (int)$port;
+
+        // Recipients
+        $mail->setFrom($fromEmail, $fromName);
+        $mail->addAddress($to);
+        
+        if ($replyTo) {
+            $mail->addReplyTo($replyTo);
+        }
+
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body    = $body;
+        $mail->AltBody = strip_tags($body);
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        error_log("sendEmail Error: {$mail->ErrorInfo}");
+        return false;
+    }
 }
 
 /**

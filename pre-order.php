@@ -244,7 +244,7 @@ require_once __DIR__ . '/includes/header.php';
   <div class="container">
     <div class="verification-layout">
       <div class="verification-image">
-        <img src="<?= ASSETS_URL ?>/images/placeholder-car.svg" style="background:var(--surface-container); padding:40px;" alt="Auction Sheet Example">
+        <img src="/assets/images/uploads/auction.png" style="background:var(--surface-container); padding:40px;" alt="Auction Sheet Example">
       </div>
       <div class="verification-content">
         <div class="label">100% TRANSPARENCY</div>

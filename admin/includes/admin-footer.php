@@ -13,7 +13,7 @@
   
   <!-- Add New Vehicle Modal -->
   <div class="modal-container" id="addVehicleModal" style="display:none;" onclick="event.stopPropagation()">
-    <form id="addVehicleForm" onsubmit="submitAddVehicle(event)">
+    <form id="addVehicleForm" onsubmit="submitAddVehicle(event)" novalidate>
       <div class="modal-header">
         <div class="modal-title">
           <h2>Add New Vehicle to Inventory</h2>
@@ -41,21 +41,21 @@
             <label class="form-label">Year of Manufacture (YOM)</label>
             <input type="number" name="year_of_manufacture" class="form-input" required min="2000" max="<?= date('Y') + 1 ?>">
           </div>
-          <div class="form-group mandatory-field">
+          <div class="form-group">
             <label class="form-label">Color</label>
-            <input type="text" name="color_name" class="form-input" required placeholder="e.g. Pearl White">
+            <input type="text" name="color_name" class="form-input" placeholder="e.g. Pearl White">
           </div>
           <div class="form-group mandatory-field highlight-field">
             <label class="form-label">Chassis Code (KEY IDENTIFIER)</label>
             <input type="text" name="chassis_code" class="form-input" required placeholder="e.g. VJA300-0019482">
           </div>
-          <div class="form-group mandatory-field">
+          <div class="form-group">
             <label class="form-label">Mileage (KM)</label>
-            <input type="number" name="mileage_km" class="form-input" required min="0">
+            <input type="number" name="mileage_km" class="form-input" min="0">
           </div>
-          <div class="form-group mandatory-field">
+          <div class="form-group">
             <label class="form-label">Auction Grade</label>
-            <select name="auction_grade" class="form-select" required>
+            <select name="auction_grade" class="form-select">
               <option value="">Select Grade</option>
               <option value="6.0">6.0 (New/Unregistered)</option>
               <option value="S">S (Like New)</option>
@@ -66,9 +66,9 @@
               <option value="R">R (Repaired/Accident)</option>
             </select>
           </div>
-          <div class="form-group mandatory-field">
+          <div class="form-group">
             <label class="form-label">Transmission</label>
-            <input type="text" name="transmission" class="form-input" required placeholder="e.g. AT, CVT">
+            <input type="text" name="transmission" class="form-input" placeholder="e.g. AT, CVT">
           </div>
         </div>
 
@@ -109,6 +109,13 @@
             <input type="number" name="price_bdt" class="form-input" placeholder="e.g. 85000000 (8.5 Cr)">
             <small style="color:var(--secondary); font-size:11px;">Enter full amount, no commas.</small>
           </div>
+          <div class="form-group" style="grid-column: 1 / -1; margin-top: 8px;">
+            <label class="form-label" style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+              <input type="checkbox" name="is_featured" value="1" style="width:18px; height:18px;">
+              <span style="font-weight:600;">Feature on Homepage</span>
+            </label>
+            <small style="color:var(--secondary); font-size:12px; margin-left: 28px; display:block;">If checked, this vehicle will appear in the "Featured Inventory" section on the landing page.</small>
+          </div>
         </div>
 
         <div class="form-section-title">Vehicle Photos & Media</div>
@@ -138,7 +145,7 @@
 
   <!-- Edit Vehicle Modal -->
   <div class="modal-container" id="editVehicleModal" style="display:none;" onclick="event.stopPropagation()">
-    <form id="editVehicleForm" onsubmit="submitEditVehicle(event)">
+    <form id="editVehicleForm" onsubmit="submitEditVehicle(event)" novalidate>
       <input type="hidden" name="vehicle_id" id="edit_vehicle_id">
       <div class="modal-header">
         <div class="modal-title">
@@ -166,21 +173,21 @@
             <label class="form-label">Year of Manufacture (YOM)</label>
             <input type="number" name="year_of_manufacture" id="edit_year_of_manufacture" class="form-input" required min="2000" max="<?= date('Y') + 1 ?>">
           </div>
-          <div class="form-group mandatory-field">
+          <div class="form-group">
             <label class="form-label">Color</label>
-            <input type="text" name="color_name" id="edit_color_name" class="form-input" required placeholder="e.g. Pearl White">
+            <input type="text" name="color_name" id="edit_color_name" class="form-input" placeholder="e.g. Pearl White">
           </div>
           <div class="form-group mandatory-field highlight-field">
             <label class="form-label">Chassis Code (KEY IDENTIFIER)</label>
             <input type="text" name="chassis_code" id="edit_chassis_code" class="form-input" required placeholder="e.g. VJA300-0019482">
           </div>
-          <div class="form-group mandatory-field">
+          <div class="form-group">
             <label class="form-label">Mileage (KM)</label>
-            <input type="number" name="mileage_km" id="edit_mileage_km" class="form-input" required min="0">
+            <input type="number" name="mileage_km" id="edit_mileage_km" class="form-input" min="0">
           </div>
-          <div class="form-group mandatory-field">
+          <div class="form-group">
             <label class="form-label">Auction Grade</label>
-            <select name="auction_grade" id="edit_auction_grade" class="form-select" required>
+            <select name="auction_grade" id="edit_auction_grade" class="form-select">
               <option value="">Select Grade</option>
               <option value="6.0">6.0 (New/Unregistered)</option>
               <option value="S">S (Like New)</option>
@@ -191,9 +198,9 @@
               <option value="R">R (Repaired/Accident)</option>
             </select>
           </div>
-          <div class="form-group mandatory-field">
+          <div class="form-group">
             <label class="form-label">Transmission</label>
-            <input type="text" name="transmission" id="edit_transmission" class="form-input" required placeholder="e.g. AT, CVT">
+            <input type="text" name="transmission" id="edit_transmission" class="form-input" placeholder="e.g. AT, CVT">
           </div>
         </div>
 
@@ -233,13 +240,30 @@
             <label class="form-label">Asking Price (BDT)</label>
             <input type="number" name="price_bdt" id="edit_price_bdt" class="form-input" placeholder="e.g. 85000000">
           </div>
+          <div class="form-group" style="grid-column: 1 / -1; margin-top: 8px;">
+            <label class="form-label" style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+              <input type="checkbox" name="is_featured" id="edit_is_featured" value="1" style="width:18px; height:18px;">
+              <span style="font-weight:600;">Feature on Homepage</span>
+            </label>
+            <small style="color:var(--secondary); font-size:12px; margin-left: 28px; display:block;">If checked, this vehicle will appear in the "Featured Inventory" section on the landing page.</small>
+          </div>
+        </div>
+        <div class="form-section-title">Vehicle Photos & Media</div>
+        <div class="upload-zone" id="editDropZone">
+          <span class="material-symbols-outlined">cloud_upload</span>
+          <div class="upload-text">Drag & drop new photos here, or click to browse</div>
+          <div class="upload-subtext">JPEG, PNG, WEBP up to 10MB. Uploading new images will replace existing ones.</div>
+          <input type="file" id="editPhotoInput" name="photos[]" multiple accept="image/jpeg, image/png, image/webp" style="display:none;">
+        </div>
+        <div class="upload-preview-grid" id="editUploadPreview">
+          <!-- Previews will be injected here via JS -->
         </div>
       </div>
       
       <div class="modal-footer">
         <div class="modal-actions">
           <button type="button" class="btn btn-outline" onclick="closeModal('editVehicleModal')">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="editVehicleSubmitBtn">Save Changes</button>
+          <button type="button" class="btn btn-primary" id="editVehicleSubmitBtn" onclick="inlineSubmitEditVehicle()">Save Changes</button>
         </div>
       </div>
     </form>
@@ -248,6 +272,46 @@
 </div>
 
 <!-- Admin Scripts -->
-<script src="<?= ASSETS_URL ?>/js/admin.js"></script>
+<script src="<?= ASSETS_URL ?>/js/admin.js?v=<?= time() + 7200 ?>"></script>
+<script>
+// Inline edit vehicle submit — bypasses all form validation issues
+async function inlineSubmitEditVehicle() {
+  const form = document.getElementById('editVehicleForm');
+  const submitBtn = document.getElementById('editVehicleSubmitBtn');
+  const feedbackEl = document.getElementById('editVehicleFeedback');
+  
+  const originalText = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Saving...';
+  
+  try {
+    const formData = new FormData(form);
+    
+    const response = await fetch('../api/admin.php?action=edit_vehicle', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const result = await response.json();
+    
+    feedbackEl.style.display = 'block';
+    if (result.success) {
+      feedbackEl.className = 'form-message success';
+      feedbackEl.innerHTML = '<span class="material-symbols-outlined" style="vertical-align:middle;margin-right:6px;font-size:18px;">check_circle</span> ' + result.message;
+      setTimeout(() => window.location.reload(), 1500);
+    } else {
+      feedbackEl.className = 'form-message error';
+      feedbackEl.innerHTML = '<span class="material-symbols-outlined" style="vertical-align:middle;margin-right:6px;font-size:18px;">error</span> ' + result.message;
+    }
+  } catch (error) {
+    feedbackEl.style.display = 'block';
+    feedbackEl.className = 'form-message error';
+    feedbackEl.innerHTML = '<span class="material-symbols-outlined" style="vertical-align:middle;margin-right:6px;font-size:18px;">error</span> Error: ' + error.message;
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalText;
+  }
+}
+</script>
 </body>
 </html>

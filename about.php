@@ -71,66 +71,6 @@ require_once __DIR__ . '/includes/header.php';
   </div>
 </section>
 
-<!-- ===== SHOWROOM GALLERY ===== -->
-<section class="showroom-section">
-  <div class="container">
-    <div class="section-header">
-      <div>
-        <h2>Our Baridhara Showroom</h2>
-        <p>Visit us to experience our premium inventory in person.</p>
-      </div>
-      <a href="<?= SITE_URL ?>/contact.php" class="showroom-link">
-        Get Directions <span class="material-symbols-outlined" style="font-size:18px;">arrow_forward</span>
-      </a>
-    </div>
-
-    <div class="showroom-gallery">
-      <div class="showroom-gallery-item large">
-        <img src="<?= ASSETS_URL ?>/images/uploads/lc300.jpg" alt="Showroom Main Area">
-        <span class="showroom-gallery-label">Main Display Area</span>
-      </div>
-      <div class="showroom-gallery-item">
-        <img src="<?= ASSETS_URL ?>/images/uploads/cross.jpg" alt="Client Lounge">
-        <span class="showroom-gallery-label">Client Lounge</span>
-      </div>
-      <div class="showroom-gallery-item">
-        <img src="<?= ASSETS_URL ?>/images/uploads/vezel.jpg" alt="Delivery Bay">
-        <span class="showroom-gallery-label">Delivery Bay</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== TEAM ===== -->
-<section class="team-section">
-  <div class="container">
-    <h2>Leadership Team</h2>
-    <p>Meet the experts who ensure your import process is seamless and secure.</p>
-
-    <div class="team-grid">
-      <div class="team-card">
-        <div class="team-card-image"></div>
-        <h3>M. Rahman</h3>
-        <p>Managing Director</p>
-      </div>
-      <div class="team-card">
-        <div class="team-card-image"></div>
-        <h3>A. Siddique</h3>
-        <p>Head of Operations</p>
-      </div>
-      <div class="team-card">
-        <div class="team-card-image"></div>
-        <h3>K. Tanaka</h3>
-        <p>Japan Procurement Lead</p>
-      </div>
-      <div class="team-card">
-        <div class="team-card-image"></div>
-        <h3>S. Ahmed</h3>
-        <p>Client Relations Manager</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ===== CTA ===== -->
 <section class="cta-section" >

@@ -31,7 +31,7 @@ $sales = dbFetchAll(
       </div>
       
       <div style="display:flex; gap:12px;">
-        <button class="btn btn-outline">
+        <button class="btn btn-outline" onclick="exportSalesCSV()">
           <span class="material-symbols-outlined" style="font-size:18px;">download</span> Export CSV
         </button>
       </div>
@@ -112,5 +112,39 @@ $sales = dbFetchAll(
   </div>
 
 </div>
+
+<script>
+function exportSalesCSV() {
+  const table = document.querySelector('.admin-table');
+  if (!table) return alert('No data to export.');
+
+  const rows = table.querySelectorAll('tr');
+  let csv = [];
+
+  rows.forEach((row, index) => {
+    const cols = row.querySelectorAll('th, td');
+    let rowData = [];
+    cols.forEach(col => {
+      // Clean text: remove extra whitespace and escape quotes
+      let text = col.innerText.replace(/\s+/g, ' ').trim();
+      text = text.replace(/"/g, '""');
+      rowData.push('"' + text + '"');
+    });
+    csv.push(rowData.join(','));
+  });
+
+  const csvContent = csv.join('\n');
+  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', 'sales_register_' + new Date().toISOString().slice(0,10) + '.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+</script>
 
 <?php require_once __DIR__ . '/includes/admin-footer.php'; ?>

@@ -173,19 +173,29 @@ $allBrands = dbFetchAll("SELECT DISTINCT brand FROM vehicles WHERE brand IS NOT 
             <h1>Current Inventory</h1>
             <p class="subtitle">Showing <?= $totalVehicles ?> high-quality imported vehicles</p>
           </div>
-          <div class="sort-dropdown">
-            <span>Sort by:</span>
-            <select id="sort-select" onchange="document.getElementById('filter-sort').value=this.value; document.getElementById('filter-form').submit();">
-              <option value="latest" <?= $sort === 'latest' ? 'selected' : '' ?>>Latest Arrivals</option>
-              <option value="price_low" <?= $sort === 'price_low' ? 'selected' : '' ?>>Price: Low to High</option>
-              <option value="price_high" <?= $sort === 'price_high' ? 'selected' : '' ?>>Price: High to Low</option>
-              <option value="mileage" <?= $sort === 'mileage' ? 'selected' : '' ?>>Lowest Mileage</option>
-            </select>
+          <div style="display:flex; align-items:center; gap:16px;">
+            <div class="view-toggle" style="display:flex; background:var(--surface-container); border-radius:var(--radius-md); padding:4px;">
+              <button type="button" class="view-btn active" id="btn-grid" onclick="setInventoryView('grid')" title="Grid View" style="border:none; background:transparent; padding:6px; cursor:pointer; border-radius:4px; display:flex; color:var(--on-surface);">
+                <span class="material-symbols-outlined">grid_view</span>
+              </button>
+              <button type="button" class="view-btn" id="btn-list" onclick="setInventoryView('list')" title="List View" style="border:none; background:transparent; padding:6px; cursor:pointer; border-radius:4px; display:flex; color:var(--secondary);">
+                <span class="material-symbols-outlined">view_list</span>
+              </button>
+            </div>
+            <div class="sort-dropdown">
+              <span>Sort by:</span>
+              <select id="sort-select" onchange="document.getElementById('filter-sort').value=this.value; document.getElementById('filter-form').submit();">
+                <option value="latest" <?= $sort === 'latest' ? 'selected' : '' ?>>Latest Arrivals</option>
+                <option value="price_low" <?= $sort === 'price_low' ? 'selected' : '' ?>>Price: Low to High</option>
+                <option value="price_high" <?= $sort === 'price_high' ? 'selected' : '' ?>>Price: High to Low</option>
+                <option value="mileage" <?= $sort === 'mileage' ? 'selected' : '' ?>>Lowest Mileage</option>
+              </select>
+            </div>
           </div>
         </div>
 
         <!-- Vehicle Grid -->
-        <div class="vehicle-grid">
+        <div class="vehicle-grid" id="vehicle-grid">
           <?php foreach ($vehicles as $v): ?>
           <div class="vehicle-card">
             <a href="<?= SITE_URL ?>/vehicle.php?slug=<?= urlencode($v['slug']) ?>" style="display:block;">
@@ -193,7 +203,7 @@ $allBrands = dbFetchAll("SELECT DISTINCT brand FROM vehicles WHERE brand IS NOT 
                 <img src="<?= getUploadUrl($v['cover_photo']) ?>"
                      alt="<?= sanitize($v['car_name']) ?>"
                      loading="lazy"
-                     onerror="this.src='<?= ASSETS_URL ?>/images/placeholder-car.svg';">
+                     onerror="this.onerror=null; this.src='<?= ASSETS_URL ?>/images/placeholder-car.svg';">
                 <?php if ($v['badge_text']): ?>
                   <span class="vehicle-badge <?= $v['badge_text'] === 'BEST VALUE' ? 'best-value' : ($v['badge_text'] === 'Top Grade' ? 'top-grade' : '') ?>">
                     <?= sanitize($v['badge_text']) ?>
@@ -246,11 +256,101 @@ $allBrands = dbFetchAll("SELECT DISTINCT brand FROM vehicles WHERE brand IS NOT 
           <?php endif; ?>
         </div>
 
+        <!-- Vehicle List View -->
+        <div class="vehicle-list" id="vehicle-list" style="display:none; width:100%; overflow-x:auto;">
+          <table class="inventory-table" style="width:100%; border-collapse:collapse; background:var(--surface-container-lowest); border-radius:var(--radius-lg); overflow:hidden; border:1px solid var(--surface-container-high);">
+            <thead>
+              <tr style="background:var(--surface-container-low); text-align:left; border-bottom:2px solid var(--surface-container-high);">
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">Car Name & Spec</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">Package / Trim</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">YOM</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">Color</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">Grade</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">Mileage (KM)</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">Trans.</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:right;">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($vehicles as $v): ?>
+              <tr style="border-bottom:1px solid var(--surface-container-high); cursor:pointer; transition:background var(--transition-fast);" onclick="window.location.href='<?= SITE_URL ?>/vehicle.php?slug=<?= urlencode($v['slug']) ?>'" onmouseover="this.style.background='var(--surface-container)'" onmouseout="this.style.background='transparent'">
+                <td style="padding:16px; display:flex; align-items:center; gap:12px;">
+                  <img src="<?= getUploadUrl($v['cover_photo']) ?>" alt="Car" style="width:60px; height:40px; object-fit:cover; border-radius:4px;" onerror="this.onerror=null; this.src='<?= ASSETS_URL ?>/images/placeholder-car.svg'">
+                  <div>
+                    <div style="font-weight:600; font-size:14px; color:var(--on-surface);"><?= sanitize($v['car_name']) ?></div>
+                    <div style="font-size:12px; color:var(--secondary);"><?= sanitize($v['engine_spec'] ?? $v['engine_cc'].'cc') ?></div>
+                  </div>
+                </td>
+                <td style="padding:16px; font-weight:500; font-size:14px;"><?= sanitize($v['package_trim'] ?? '-') ?></td>
+                <td style="padding:16px; font-weight:600; font-size:14px;"><?= (int)$v['year_of_manufacture'] ?></td>
+                <td style="padding:16px; font-size:14px;">
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <?php if($v['color_hex']): ?>
+                      <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background-color:<?= sanitize($v['color_hex']) ?>; border:1px solid var(--surface-container-high);"></span>
+                    <?php endif; ?>
+                    <?= sanitize($v['color_name'] ?? '-') ?>
+                  </div>
+                </td>
+                <td style="padding:16px;">
+                  <span style="font-size:11px; padding:2px 8px; border-radius:4px; font-weight:700; background:var(--surface-container-high); color:var(--on-surface);"><?= sanitize($v['auction_grade'] ?? '-') ?></span>
+                </td>
+                <td style="padding:16px; font-family:monospace; font-size:14px;"><?= number_format((int)$v['mileage_km']) ?></td>
+                <td style="padding:16px; font-size:14px;"><?= sanitize($v['transmission'] ?? '-') ?></td>
+                <td style="padding:16px; font-weight:700; color:var(--primary); text-align:right;">
+                  <?= $v['price_bdt'] ? formatBDT($v['price_bdt'], true) : 'Call for Price' ?>
+                </td>
+              </tr>
+              <?php endforeach; ?>
+              
+              <?php if (empty($vehicles)): ?>
+                <tr>
+                  <td colspan="8" style="text-align: center; color: var(--secondary); padding: 64px 0;">
+                    No vehicles match your filters. Try adjusting your search criteria.
+                  </td>
+                </tr>
+              <?php endif; ?>
+            </tbody>
+          </table>
+        </div>
+
         <!-- Pagination -->
         <?= renderPagination($pagination, 'inventory.php') ?>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  function setInventoryView(view) {
+    const grid = document.getElementById('vehicle-grid');
+    const list = document.getElementById('vehicle-list');
+    const btnGrid = document.getElementById('btn-grid');
+    const btnList = document.getElementById('btn-list');
+
+    if (view === 'grid') {
+      grid.style.display = 'grid';
+      list.style.display = 'none';
+      btnGrid.style.background = 'var(--surface-container-highest)';
+      btnGrid.style.color = 'var(--on-surface)';
+      btnList.style.background = 'transparent';
+      btnList.style.color = 'var(--secondary)';
+      localStorage.setItem('inventoryView', 'grid');
+    } else {
+      grid.style.display = 'none';
+      list.style.display = 'block';
+      btnList.style.background = 'var(--surface-container-highest)';
+      btnList.style.color = 'var(--on-surface)';
+      btnGrid.style.background = 'transparent';
+      btnGrid.style.color = 'var(--secondary)';
+      localStorage.setItem('inventoryView', 'list');
+    }
+  }
+
+  // Restore preferred view on load
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedView = localStorage.getItem('inventoryView') || 'grid';
+    setInventoryView(savedView);
+  });
+</script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

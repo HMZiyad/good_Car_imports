@@ -83,8 +83,13 @@ $statusBadgeHtml = getStatusBadge($vehicle['status']);
     <div class="specs-bar">
       <div class="spec-bar-item">
         <span class="material-symbols-outlined spec-icon">calendar_today</span>
-        <div class="spec-bar-label">YEAR</div>
+        <div class="spec-bar-label">YEAR of Manufacture</div>
         <div class="spec-bar-value"><?= (int)$vehicle['year_of_manufacture'] ?></div>
+      </div>
+      <div class="spec-bar-item">
+        <span class="material-symbols-outlined spec-icon">star</span>
+        <div class="spec-bar-label">GRADE</div>
+        <div class="spec-bar-value"><?= sanitize($vehicle['auction_grade'] ?? 'N/A') ?></div>
       </div>
       <div class="spec-bar-item">
         <span class="material-symbols-outlined spec-icon">speed</span>
@@ -100,11 +105,6 @@ $statusBadgeHtml = getStatusBadge($vehicle['status']);
         <span class="material-symbols-outlined spec-icon">local_gas_station</span>
         <div class="spec-bar-label">FUEL</div>
         <div class="spec-bar-value"><?= sanitize($vehicle['fuel_type']) ?></div>
-      </div>
-      <div class="spec-bar-item">
-        <span class="material-symbols-outlined spec-icon">star</span>
-        <div class="spec-bar-label">GRADE</div>
-        <div class="spec-bar-value"><?= sanitize($vehicle['auction_grade'] ?? 'N/A') ?></div>
       </div>
     </div>
 

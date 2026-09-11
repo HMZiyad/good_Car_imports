@@ -197,8 +197,7 @@ $records = dbFetchAll(
             <?php elseif ($r['current_stage'] === 'auction_won' || $r['current_stage'] === 'japan_yard'): ?>
               <button class="btn btn-outline" style="padding:4px 10px; font-size:12px; margin-bottom:4px; width:130px; justify-content:center;">Export Docs</button>
             <?php endif; ?>
-            <br>
-            <button class="btn btn-outline" style="padding:4px 10px; font-size:12px; border:none; color:var(--primary); width:130px; justify-content:center;">Edit Record</button>
+            <button type="button" class="btn btn-outline" onclick="openEditStockInwardModal(<?= $r['id'] ?>)" style="padding:4px 10px; font-size:12px; border:none; color:var(--primary); width:130px; justify-content:center;">Edit Record</button>
           </td>
         </tr>
         <?php endforeach; ?>
@@ -338,11 +337,118 @@ $records = dbFetchAll(
   </form>
 </div>
 
+<!-- Edit Stock Inward Modal -->
+<div class="modal-container" id="editStockInwardModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:1001; max-width:700px; width:100%; box-shadow:var(--shadow-modal);">
+  <form id="editStockInwardForm" onsubmit="submitEditStockInward(event)">
+    <input type="hidden" name="inward_id" id="edit_inward_id">
+    <div class="modal-header">
+      <div class="modal-title">
+        <h2>Edit Pipeline Record</h2>
+      </div>
+      <button type="button" class="icon-btn" onclick="closeModal('editStockInwardModal')">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    
+    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+      <div id="editStockInwardFeedback" class="form-message" style="display:none;"></div>
+
+      <div class="form-group mandatory-field">
+        <label class="form-label">Pipeline Stage</label>
+        <select name="current_stage" id="edit_inward_stage" class="form-select" required>
+          <option value="auction_won">1. Auction Won (Awaiting Transport)</option>
+          <option value="japan_yard">2. Japan Export Yard</option>
+          <option value="sea_transit">3. Sea Transit Afloat</option>
+          <option value="ctg_customs">4. Chittagong Customs</option>
+          <option value="dhaka_handover">5. Dhaka Handover</option>
+        </select>
+      </div>
+
+      <div class="form-section-title" style="margin-top: 24px;">Vehicle Identification</div>
+      <div class="form-group mandatory-field highlight-field">
+        <label class="form-label">Chassis Code (MANDATORY)</label>
+        <input type="text" name="chassis_code" id="edit_inward_chassis" class="form-input" required>
+      </div>
+
+      <div class="grid-2-col">
+        <div class="form-group mandatory-field">
+          <label class="form-label">Car Name</label>
+          <input type="text" name="car_name" id="edit_inward_car_name" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Package/Trim</label>
+          <input type="text" name="package_trim" id="edit_inward_trim" class="form-input">
+        </div>
+        <div class="form-group mandatory-field">
+          <label class="form-label">Year of Manufacture</label>
+          <input type="number" name="year_of_manufacture" id="edit_inward_yom" class="form-input" required min="2000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Color Name</label>
+          <input type="text" name="color_name" id="edit_inward_color" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mileage (KM)</label>
+          <input type="number" name="mileage_km" id="edit_inward_mileage" class="form-input" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Auction Grade</label>
+          <input type="text" name="auction_grade" id="edit_inward_grade" class="form-input">
+        </div>
+      </div>
+
+      <div class="form-section-title">Auction Win & Commercial Valuation Details</div>
+      <div class="grid-2-col">
+        <div class="form-group mandatory-field">
+          <label class="form-label">Auction House</label>
+          <select name="auction_house" id="edit_inward_house" class="form-select" required>
+            <option value="">Select House</option>
+            <option value="USS Tokyo">USS Tokyo</option>
+            <option value="USS Nagoya">USS Nagoya</option>
+            <option value="TAA Chubu">TAA Chubu</option>
+            <option value="JU Yokohama">JU Yokohama</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Lot Number</label>
+          <input type="text" name="auction_lot" id="edit_inward_lot" class="form-input">
+        </div>
+        <div class="form-group mandatory-field">
+          <label class="form-label">Won Price (JPY)</label>
+          <input type="number" name="won_price_jpy" id="edit_inward_jpy" class="form-input" required oninput="calculateBdtEdit(this.value)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">BDT Equivalent</label>
+          <input type="number" name="bdt_equivalent" id="edit_inward_bdt" class="form-input" readonly style="background:var(--surface-container-low);">
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <div class="modal-footer-note">
+        <span class="material-symbols-outlined" style="color:var(--tertiary);font-size:16px;">edit</span>
+        Update inward pipeline record
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeModal('editStockInwardModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="editStockInwardSubmitBtn">Save Changes</button>
+      </div>
+    </div>
+  </form>
+</div>
+
 <script>
 function calculateBdt(jpy) {
   const rate = parseFloat(document.getElementById('currentForexRate').value);
   const bdt = jpy * rate;
   document.getElementById('bdtEquivalent').value = isNaN(bdt) ? '' : Math.round(bdt);
+}
+
+function calculateBdtEdit(jpy) {
+  const rate = parseFloat(document.getElementById('currentForexRate').value);
+  const bdt = jpy * rate;
+  document.getElementById('edit_inward_bdt').value = isNaN(bdt) ? '' : Math.round(bdt);
 }
 </script>
 

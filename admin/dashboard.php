@@ -42,8 +42,6 @@ $pendingInward = dbFetchAll("SELECT * FROM stock_inward WHERE current_stage IN (
   <!-- Sub Navigation -->
   <div class="admin-tabs">
     <a href="#" class="admin-tab active">Inventory Status</a>
-    <a href="#" class="admin-tab">Auction Sheet Audit</a>
-    <a href="#" class="admin-tab">BDT Forex Rates <span class="status-dot" style="display:inline-block; margin-left:4px;"></span></a>
   </div>
 
   <!-- KPI Grid -->

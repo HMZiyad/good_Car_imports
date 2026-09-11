@@ -42,6 +42,19 @@ if ($type === 'contact' || $type === 'booking') {
             'status'        => 'new'
         ]);
 
+        // Send email notification to Admin
+        $adminEmail = getSetting('company_email', 'goodcarimports.bd@gmail.com');
+        $subject = "New Inquiry: $interestedIn";
+        $body = "
+            <h2>New Contact Inquiry</h2>
+            <p><strong>Name:</strong> $fullName</p>
+            <p><strong>Phone:</strong> $phone</p>
+            <p><strong>Email:</strong> $email</p>
+            <p><strong>Interested In:</strong> $interestedIn</p>
+            <p><strong>Message:</strong><br/>".nl2br($message)."</p>
+        ";
+        sendEmail($adminEmail, $subject, $body, $email ?: null);
+
         jsonResponse([
             'success' => true, 
             'message' => 'Thank you! Your inquiry has been received. Our team will contact you shortly.'
@@ -105,6 +118,27 @@ if ($type === 'contact' || $type === 'booking') {
             'whatsapp'         => $hasWhatsapp,
             'status'           => 'new'
         ]);
+
+        // Send email notification to Admin
+        $adminEmail = getSetting('company_email', 'goodcarimports.bd@gmail.com');
+        $subject = "New Pre-Order: $makeModel";
+        $body = "
+            <h2>New Pre-Order Request</h2>
+            <p><strong>Name:</strong> $fullName</p>
+            <p><strong>Phone:</strong> $phone</p>
+            <p><strong>Email:</strong> $email</p>
+            <p><strong>WhatsApp:</strong> " . ($hasWhatsapp ? 'Yes' : 'No') . "</p>
+            <hr>
+            <p><strong>Car:</strong> $makeModel</p>
+            <p><strong>Region:</strong> $region</p>
+            <p><strong>Body Style:</strong> $bodyStyle</p>
+            <p><strong>Year (From):</strong> $yearFrom</p>
+            <p><strong>Color:</strong> $color</p>
+            <p><strong>Budget:</strong> $budget Lakh BDT</p>
+            <p><strong>Timeline:</strong> $timeline</p>
+            <p><strong>Notes:</strong><br/>".nl2br($notes)."</p>
+        ";
+        sendEmail($adminEmail, $subject, $body, $email ?: null);
 
         jsonResponse([
             'success' => true, 

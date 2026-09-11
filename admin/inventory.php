@@ -46,8 +46,6 @@ $vehicles = dbFetchAll(
   <!-- Sub Navigation -->
   <div class="admin-tabs">
     <a href="#" class="admin-tab active">Live Inventory</a>
-    <a href="#" class="admin-tab">Customs & Transit Pipeline</a>
-    <a href="#" class="admin-tab">Price & Margin Audit</a>
   </div>
 
   <!-- KPI Grid -->
@@ -133,7 +131,7 @@ $vehicles = dbFetchAll(
         <tr>
           <td>
             <div class="td-car">
-              <img src="<?= getUploadUrl($v['cover_photo']) ?>" alt="Car" class="td-car-img" onerror="this.src='<?= ASSETS_URL ?>/images/placeholder-car.svg'">
+              <img src="<?= getUploadUrl($v['cover_photo']) ?>" alt="Car" class="td-car-img" onerror="this.onerror=null; this.src='<?= ASSETS_URL ?>/images/placeholder-car.svg'">
               <div class="td-car-info">
                 <span class="td-car-name"><?= sanitize($v['car_name']) ?></span>
                 <span class="td-car-spec"><?= sanitize($v['engine_spec'] ?? $v['engine_cc'].'cc') ?></span>
@@ -172,6 +170,9 @@ $vehicles = dbFetchAll(
               <a href="<?= SITE_URL ?>/vehicle.php?slug=<?= urlencode($v['slug']) ?>" target="_blank" class="icon-btn" title="View Frontend">
                 <span class="material-symbols-outlined">visibility</span>
               </a>
+              <button type="button" class="icon-btn" onclick="deleteVehicle(<?= $v['id'] ?>)" title="Delete Vehicle" style="color:var(--error);">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
             </div>
           </td>
         </tr>

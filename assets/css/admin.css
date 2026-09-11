@@ -739,6 +739,13 @@ body {
   transform: translateY(0);
 }
 
+.modal-container form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;

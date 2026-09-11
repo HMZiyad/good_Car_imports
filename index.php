@@ -17,6 +17,12 @@ $featuredVehicles = dbFetchAll(
 <!-- ===== HERO SECTION ===== -->
 <section class="hero">
   <div class="container">
+    <div class="hero-video-wrapper">
+      <video class="hero-video-bg" autoplay loop muted playsinline>
+        <source src="<?= SITE_URL ?>/assets/images/uploads/home.mp4" type="video/mp4">
+      </video>
+      <div class="hero-video-overlay"></div>
+    </div>
     <div class="hero-content">
       <h1 class="hero-title">
         Drive Your Dream.<br>
@@ -163,7 +169,7 @@ $featuredVehicles = dbFetchAll(
       </div>
       <div class="process-step">
         <div class="process-step-number">2</div>
-        <h3>Bid/Purchase</h3>
+        <h3>Auction/Bidding</h3>
         <p>We secure the car at the best possible price.</p>
       </div>
       <div class="process-step">

@@ -9,8 +9,8 @@ require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/functions.php';
 
 $currentPage = getCurrentPage();
-$whatsappNumber = getSetting('whatsapp_number', '+8801711000000');
-$companyPhone = getSetting('company_phone_1', '+880 1711 000 000');
+$whatsappNumber = getSetting('whatsapp_number', '+8801992424492');
+$companyPhone = getSetting('company_phone_1', '+880 19 9242 4492');
 ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
@@ -23,6 +23,15 @@ $companyPhone = getSetting('company_phone_1', '+880 1711 000 000');
   <!-- CSS -->
   <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/design-tokens.css?v=2">
   <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/frontend.css?v=3">
+
+  <!-- Theme Script (Prevents FOUC) -->
+  <script>
+    const storedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
 
   <!-- Favicon -->
   <link rel="icon" href="<?= ASSETS_URL ?>/images/logo-transparent.png" type="image/png">
@@ -97,16 +106,22 @@ $companyPhone = getSetting('company_phone_1', '+880 1711 000 000');
       <!-- Desktop Nav Links -->
       <ul class="nav-links" id="nav-links">
         <li><a href="<?= SITE_URL ?>/" class="nav-link <?= $currentPage === 'home' ? 'active' : '' ?>">Home</a></li>
-        <li><a href="<?= SITE_URL ?>/inventory.php" class="nav-link <?= $currentPage === 'inventory' ? 'active' : '' ?>">Inventory</a></li>
+        <li><a href="<?= SITE_URL ?>/inventory.php" class="nav-link <?= $currentPage === 'inventory' ? 'active' : '' ?>">Stock</a></li>
         <li><a href="<?= SITE_URL ?>/pre-order.php" class="nav-link <?= $currentPage === 'pre-order' ? 'active' : '' ?>">Pre-Order</a></li>
         <li><a href="<?= SITE_URL ?>/about.php" class="nav-link <?= $currentPage === 'about' ? 'active' : '' ?>">About</a></li>
         <li><a href="<?= SITE_URL ?>/contact.php" class="nav-link <?= $currentPage === 'contact' ? 'active' : '' ?>">Contact</a></li>
       </ul>
 
-      <!-- Call Now CTA -->
-      <a href="tel:<?= str_replace(' ', '', $companyPhone) ?>" class="nav-cta">
-        Call Now
-      </a>
+      <!-- Actions -->
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+          <span class="material-symbols-outlined light-icon">light_mode</span>
+          <span class="material-symbols-outlined dark-icon">dark_mode</span>
+        </button>
+        <a href="tel:<?= str_replace(' ', '', $companyPhone) ?>" class="nav-cta">
+          Call Now
+        </a>
+      </div>
 
       <!-- Mobile Hamburger Button -->
       <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
@@ -120,7 +135,7 @@ $companyPhone = getSetting('company_phone_1', '+880 1711 000 000');
     <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
       <ul class="mobile-nav-links">
         <li><a href="<?= SITE_URL ?>/" class="mobile-nav-link <?= $currentPage === 'home' ? 'active' : '' ?>">Home</a></li>
-        <li><a href="<?= SITE_URL ?>/inventory.php" class="mobile-nav-link <?= $currentPage === 'inventory' ? 'active' : '' ?>">Inventory</a></li>
+        <li><a href="<?= SITE_URL ?>/inventory.php" class="mobile-nav-link <?= $currentPage === 'inventory' ? 'active' : '' ?>">Stock</a></li>
         <li><a href="<?= SITE_URL ?>/pre-order.php" class="mobile-nav-link <?= $currentPage === 'pre-order' ? 'active' : '' ?>">Pre-Order</a></li>
         <li><a href="<?= SITE_URL ?>/about.php" class="mobile-nav-link <?= $currentPage === 'about' ? 'active' : '' ?>">About</a></li>
         <li><a href="<?= SITE_URL ?>/contact.php" class="mobile-nav-link <?= $currentPage === 'contact' ? 'active' : '' ?>">Contact</a></li>
