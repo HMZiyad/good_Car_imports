@@ -92,6 +92,6 @@ $companyPhone1 = getSetting('company_phone_1', '+880 19 9242 4492');
   </a>
 
   <!-- Scripts -->
-  <script src="<?= ASSETS_URL ?>/js/frontend.js"></script>
+  <script src="<?= ASSETS_URL ?>/js/frontend.js?v=2"></script>
 </body>
 </html>

@@ -180,80 +180,7 @@ $statusBadgeHtml = getStatusBadge($vehicle['status']);
           </div>
         </dl>
 
-        <!-- Features -->
-        <div class="feature-tabs">
-          <div class="feature-tab-nav">
-            <button class="feature-tab-btn active" onclick="switchTab('safety')">Safety</button>
-            <button class="feature-tab-btn" onclick="switchTab('interior')">Interior</button>
-            <button class="feature-tab-btn" onclick="switchTab('exterior')">Exterior</button>
-          </div>
-          
-          <div id="tab-safety" class="feature-tab-content">
-            <?php if (!empty($safetyFeatures)): ?>
-              <ul class="feature-list">
-                <?php foreach ($safetyFeatures as $feature): ?>
-                  <li><span class="material-symbols-outlined">check_circle</span> <?= sanitize($feature) ?></li>
-                <?php endforeach; ?>
-              </ul>
-            <?php else: ?>
-              <p style="color:var(--secondary); padding:16px 0;">No safety features listed.</p>
-            <?php endif; ?>
-          </div>
 
-          <div id="tab-interior" class="feature-tab-content" style="display:none;">
-            <?php if (!empty($interiorFeatures)): ?>
-              <ul class="feature-list">
-                <?php foreach ($interiorFeatures as $feature): ?>
-                  <li><span class="material-symbols-outlined">check_circle</span> <?= sanitize($feature) ?></li>
-                <?php endforeach; ?>
-              </ul>
-            <?php else: ?>
-              <p style="color:var(--secondary); padding:16px 0;">No interior features listed.</p>
-            <?php endif; ?>
-          </div>
-
-          <div id="tab-exterior" class="feature-tab-content" style="display:none;">
-            <?php if (!empty($exteriorFeatures)): ?>
-              <ul class="feature-list">
-                <?php foreach ($exteriorFeatures as $feature): ?>
-                  <li><span class="material-symbols-outlined">check_circle</span> <?= sanitize($feature) ?></li>
-                <?php endforeach; ?>
-              </ul>
-            <?php else: ?>
-              <p style="color:var(--secondary); padding:16px 0;">No exterior features listed.</p>
-            <?php endif; ?>
-          </div>
-        </div>
-
-        <!-- Auction Sheet Section -->
-        <div class="auction-sheet">
-          <div class="auction-sheet-header">
-            <h3>Verified Auction Sheet</h3>
-            <button class="auction-download-btn">
-              <span class="material-symbols-outlined">download</span> Download Original
-            </button>
-          </div>
-          <div class="auction-sheet-content">
-            <div class="auction-sheet-thumbnail">
-              <!-- Placeholder for auction sheet image -->
-              <img src="<?= ASSETS_URL ?>/images/placeholder-car.svg" style="opacity:0.3; padding:20px; background:var(--surface-container);" alt="Auction Sheet">
-            </div>
-            <div class="inspection-notes">
-              <div class="inspection-note">
-                <h4>Auction Grade</h4>
-                <p><?= sanitize($vehicle['auction_grade'] ?? 'Pending') ?></p>
-              </div>
-              <div class="inspection-note">
-                <h4>Interior Grade</h4>
-                <p><?= sanitize($vehicle['interior_grade'] ?? 'Pending') ?></p>
-              </div>
-              <div class="inspection-note">
-                <h4>Authenticity</h4>
-                <p>Mileage verified by Japanese auction house.</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- SIDEBAR -->
@@ -294,14 +221,14 @@ $statusBadgeHtml = getStatusBadge($vehicle['status']);
         <div class="location-card">
           <h3>Vehicle Location</h3>
           <div class="location-card-map">
-            <!-- Simple iframe map placeholder for Baridhara -->
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14602.700311894985!2d90.40798995000001!3d23.79458205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c7a0f70deb73%3A0x30c36498f90fe23!2sBaridhara%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1715000000000!5m2!1sen!2sbd" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <!-- Map iframe for Office -->
+            <iframe src="https://maps.google.com/maps?q=23.7369831,90.4123104&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
           <div class="location-card-address">
             <span class="material-symbols-outlined">location_on</span>
             <span>
-              <strong><?= sanitize($vehicle['showroom_location']) ?></strong><br>
-              <?= sanitize(getSetting('company_address_1', 'Dhaka, Bangladesh')) ?>
+              <strong>Our Office</strong><br>
+              <?= sanitize(getSetting('company_address_1', 'Eastern Trade Center, 56 VIP Rd, Dhaka 1205')) ?>
             </span>
           </div>
         </div>

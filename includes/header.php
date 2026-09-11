@@ -13,7 +13,7 @@ $whatsappNumber = getSetting('whatsapp_number', '+8801992424492');
 $companyPhone = getSetting('company_phone_1', '+880 19 9242 4492');
 ?>
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,16 +22,7 @@ $companyPhone = getSetting('company_phone_1', '+880 19 9242 4492');
 
   <!-- CSS -->
   <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/design-tokens.css?v=2">
-  <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/frontend.css?v=3">
-
-  <!-- Theme Script (Prevents FOUC) -->
-  <script>
-    const storedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
-  </script>
+  <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/frontend.css?v=7">
 
   <!-- Favicon -->
   <link rel="icon" href="<?= ASSETS_URL ?>/images/logo-transparent.png" type="image/png">
@@ -114,7 +105,7 @@ $companyPhone = getSetting('company_phone_1', '+880 19 9242 4492');
 
       <!-- Actions -->
       <div class="nav-actions">
-        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+        <button class="theme-toggle-btn desktop-theme-toggle" aria-label="Toggle dark mode">
           <span class="material-symbols-outlined light-icon">light_mode</span>
           <span class="material-symbols-outlined dark-icon">dark_mode</span>
         </button>
@@ -130,22 +121,28 @@ $companyPhone = getSetting('company_phone_1', '+880 19 9242 4492');
         <span class="hamburger-line"></span>
       </button>
     </nav>
-
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-      <ul class="mobile-nav-links">
-        <li><a href="<?= SITE_URL ?>/" class="mobile-nav-link <?= $currentPage === 'home' ? 'active' : '' ?>">Home</a></li>
-        <li><a href="<?= SITE_URL ?>/inventory.php" class="mobile-nav-link <?= $currentPage === 'inventory' ? 'active' : '' ?>">Stock</a></li>
-        <li><a href="<?= SITE_URL ?>/pre-order.php" class="mobile-nav-link <?= $currentPage === 'pre-order' ? 'active' : '' ?>">Pre-Order</a></li>
-        <li><a href="<?= SITE_URL ?>/about.php" class="mobile-nav-link <?= $currentPage === 'about' ? 'active' : '' ?>">About</a></li>
-        <li><a href="<?= SITE_URL ?>/contact.php" class="mobile-nav-link <?= $currentPage === 'contact' ? 'active' : '' ?>">Contact</a></li>
-      </ul>
-      <a href="tel:<?= str_replace(' ', '', $companyPhone) ?>" class="mobile-cta-btn">
-        <span class="material-symbols-outlined">call</span>
-        Call Now
-      </a>
-    </div>
   </header>
+
+  <!-- Mobile Menu Overlay (outside header to avoid backdrop-filter containing block) -->
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <div style="display: flex; justify-content: center; margin-bottom: 24px;">
+      <button class="theme-toggle-btn mobile-theme-toggle" aria-label="Toggle dark mode">
+        <span class="material-symbols-outlined light-icon">light_mode</span>
+        <span class="material-symbols-outlined dark-icon">dark_mode</span>
+      </button>
+    </div>
+    <ul class="mobile-nav-links">
+      <li><a href="<?= SITE_URL ?>/" class="mobile-nav-link <?= $currentPage === 'home' ? 'active' : '' ?>">Home</a></li>
+      <li><a href="<?= SITE_URL ?>/inventory.php" class="mobile-nav-link <?= $currentPage === 'inventory' ? 'active' : '' ?>">Stock</a></li>
+      <li><a href="<?= SITE_URL ?>/pre-order.php" class="mobile-nav-link <?= $currentPage === 'pre-order' ? 'active' : '' ?>">Pre-Order</a></li>
+      <li><a href="<?= SITE_URL ?>/about.php" class="mobile-nav-link <?= $currentPage === 'about' ? 'active' : '' ?>">About</a></li>
+      <li><a href="<?= SITE_URL ?>/contact.php" class="mobile-nav-link <?= $currentPage === 'contact' ? 'active' : '' ?>">Contact</a></li>
+    </ul>
+    <a href="tel:<?= str_replace(' ', '', $companyPhone) ?>" class="mobile-cta-btn">
+      <span class="material-symbols-outlined">call</span>
+      Call Now
+    </a>
+  </div>
 
   <!-- ===== Main Content ===== -->
   <main id="main-content">

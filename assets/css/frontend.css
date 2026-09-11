@@ -160,7 +160,6 @@
 
 /* Mobile Menu */
 .mobile-menu {
-  display: none;
   position: fixed;
   top: 64px;
   left: 0;
@@ -168,15 +167,20 @@
   bottom: 0;
   background: var(--surface-container-lowest);
   padding: var(--unit-lg);
-  z-index: 999;
+  z-index: 1001;
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   transform: translateY(-10px);
-  transition: opacity var(--transition-base), transform var(--transition-base);
+  transition: opacity var(--transition-base), transform var(--transition-base), visibility var(--transition-base);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .mobile-menu.open {
-  display: block;
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
   transform: translateY(0);
 }
 
@@ -221,13 +225,15 @@
   position: relative;
   padding: 0px 0 80px;
   background-color: var(--surface-container-lowest);
+  overflow: hidden;
 }
 
 .hero .container {
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 1100px;
+  min-height: 100vh;
+  min-height: 100svh;
   overflow: hidden;
 }
 
@@ -960,7 +966,7 @@
   grid-template-rows: 1fr 1fr;
   gap: var(--unit-sm);
   margin-bottom: var(--unit-xl);
-  height: 500px;
+  height: clamp(280px, 40vw, 500px);
 }
 
 .gallery-main {
@@ -2343,11 +2349,16 @@
 
 /* ====== RESPONSIVE DESIGN ====== */
 
+/* Prevent horizontal overflow globally */
+html, body {
+  overflow-x: hidden;
+}
+
 /* Tablet (max-width: 1024px) */
 @media (max-width: 1024px) {
   .hero .container {
-    grid-template-columns: 1fr;
-    gap: var(--unit-lg);
+    min-height: 70vh;
+    min-height: 70svh;
   }
 
   .hero-content {
@@ -2376,6 +2387,10 @@
 
   .detail-content {
     grid-template-columns: 1fr;
+  }
+
+  .detail-sidebar {
+    position: static;
   }
 
   .quick-specs {
@@ -2418,6 +2433,30 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--unit-lg);
   }
+
+  /* Gallery adapts */
+  .gallery-grid {
+    height: clamp(260px, 35vw, 400px);
+  }
+
+  /* Specs bar wrap */
+  .specs-bar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .spec-bar-item:nth-child(3) {
+    border-right: none;
+  }
+
+  /* Spec table */
+  .spec-table {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* CTA */
+  .cta-section h2 {
+    font-size: 26px;
+  }
 }
 
 /* Mobile (max-width: 768px) */
@@ -2428,7 +2467,8 @@
     display: none;
   }
 
-  .nav-cta {
+  .nav-cta,
+  .desktop-theme-toggle {
     display: none;
   }
 
@@ -2450,7 +2490,20 @@
 
   /* Hero */
   .hero {
-    padding: 96px 0 48px;
+    padding: 0 0 48px;
+  }
+
+  .hero .container {
+    min-height: 60vh;
+    min-height: 60svh;
+  }
+
+  .hero-video-overlay {
+    background: linear-gradient(to right, var(--surface-container-lowest) 20%, rgba(161, 29, 29, 0) 90%);
+  }
+
+  .hero-content {
+    max-width: 100%;
   }
 
   .hero-image img {
@@ -2487,6 +2540,16 @@
     grid-template-columns: 1fr;
   }
 
+  .inventory-header {
+    flex-direction: column;
+    gap: var(--unit-sm);
+  }
+
+  .inventory-header h1 {
+    font-size: var(--headline-lg-mobile-size);
+    line-height: var(--headline-lg-mobile-line);
+  }
+
   .filter-sidebar {
     position: static;
     display: none;
@@ -2510,24 +2573,77 @@
     border-right: none;
   }
 
+  /* Specs Bar */
+  .specs-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .spec-bar-item {
+    border-right: none;
+    border-bottom: 1px solid var(--surface-container-high);
+  }
+
+  .spec-bar-item:nth-child(odd) {
+    border-right: 1px solid var(--surface-container-high);
+  }
+
+  .spec-bar-item:last-child,
+  .spec-bar-item:nth-last-child(2):nth-child(odd) {
+    border-bottom: none;
+  }
+
   /* Spec Table */
   .spec-table {
     grid-template-columns: 1fr 1fr;
   }
 
   /* Gallery */
-  .gallery-main img {
-    height: 260px;
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
   }
 
-  /* Detail Title */
+  .gallery-main {
+    grid-row: auto;
+    grid-column: auto;
+    aspect-ratio: 16 / 10;
+  }
+
+  .gallery-side {
+    display: none;
+  }
+
+  /* Detail */
+  .detail-page {
+    padding: 72px 0 32px;
+  }
+
   .detail-title-bar {
     flex-direction: column;
     gap: var(--unit-sm);
+    align-items: flex-start;
+  }
+
+  .detail-title-left h1 {
+    font-size: 22px;
+    line-height: 30px;
   }
 
   .detail-price {
     text-align: left;
+  }
+
+  .detail-price-value {
+    font-size: 22px;
+  }
+
+  .detail-content {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-sidebar {
+    position: static;
   }
 
   /* Auction Sheet */
@@ -2535,18 +2651,49 @@
     grid-template-columns: 1fr;
   }
 
+  .auction-sheet-header {
+    flex-direction: column;
+    gap: var(--unit-sm);
+    align-items: flex-start;
+  }
+
+  /* Feature Tab Nav */
+  .feature-tab-nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .feature-tab-btn {
+    white-space: nowrap;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
   /* About */
   .about-hero {
-    padding: 96px 0 48px;
+    padding: 80px 0 40px;
   }
 
   .about-hero-grid h1 {
-    font-size: 28px;
-    line-height: 36px;
+    font-size: 24px;
+    line-height: 32px;
   }
 
   .about-stats {
-    gap: var(--unit-lg);
+    flex-wrap: wrap;
+    gap: var(--unit-md);
+  }
+
+  .about-stat-value {
+    font-size: 24px;
+  }
+
+  .about-hero-image img {
+    height: 240px;
+  }
+
+  .values-section {
+    padding: 64px 0;
   }
 
   .showroom-gallery {
@@ -2562,19 +2709,58 @@
     padding: 80px 0 32px;
   }
 
+  .contact-header h1 {
+    font-size: 26px;
+  }
+
   /* Pre-order */
   .preorder-hero {
-    padding: 96px 0 56px;
+    padding: 90px 0 48px;
   }
 
   .form-row {
     grid-template-columns: 1fr;
   }
 
+  .form-stepper {
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--unit-sm);
+  }
+
+  .step-indicator {
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+    text-align: center;
+  }
+
+  /* CTA section */
+  .cta-section {
+    padding: 48px 0;
+  }
+
+  .cta-section h2 {
+    font-size: 22px;
+  }
+
+  .cta-section p {
+    font-size: 14px;
+  }
+
   /* Footer */
+  .footer-main {
+    padding: 32px 20px 24px;
+  }
+
   .footer-grid {
     grid-template-columns: 1fr;
     gap: var(--unit-lg);
+  }
+
+  .footer-copyright {
+    padding: var(--unit-md) 20px;
   }
 
   .footer-copyright-inner {
@@ -2610,6 +2796,29 @@
     align-items: flex-start;
     gap: var(--unit-sm);
   }
+
+  /* Featured/Process section padding */
+  .featured-section,
+  .process-section {
+    padding: 40px 0;
+  }
+
+  .process-section h2,
+  .benefits-section h2 {
+    font-size: var(--headline-lg-mobile-size);
+    line-height: var(--headline-lg-mobile-line);
+  }
+
+  /* Vehicle card specs overflow */
+  .vehicle-card-specs {
+    flex-wrap: wrap;
+    gap: var(--unit-sm);
+  }
+
+  .vehicle-card-header-row {
+    flex-direction: column;
+    gap: 4px;
+  }
 }
 
 /* Small Mobile (max-width: 480px) */
@@ -2620,12 +2829,27 @@
 
   .hero-title,
   .preorder-hero h1 {
-    font-size: 24px;
-    line-height: 32px;
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .btn-primary,
+  .btn-outline {
+    padding: 12px 20px;
+    font-size: 14px;
   }
 
   .vehicle-card-price {
-    font-size: 20px;
+    font-size: 18px;
+  }
+
+  .vehicle-card-name {
+    font-size: 16px;
   }
 
   .quick-specs {
@@ -2652,6 +2876,96 @@
     width: 100%;
     text-align: center;
     justify-content: center;
+  }
+
+  /* Specs bar stacks fully */
+  .specs-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .spec-bar-item {
+    border-right: none;
+    border-bottom: 1px solid var(--surface-container-high);
+    flex-direction: row;
+    gap: var(--unit-md);
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .spec-bar-label {
+    margin-bottom: 0;
+  }
+
+  .spec-bar-item:last-child {
+    border-bottom: none;
+  }
+
+  .spec-bar-item .spec-icon {
+    margin-bottom: 0;
+  }
+
+  /* Spec table single column */
+  .spec-table {
+    grid-template-columns: 1fr;
+  }
+
+  /* Trust cards padding */
+  .trust-card {
+    padding: var(--unit-md);
+  }
+
+  /* Process step */
+  .process-step {
+    padding: var(--unit-md);
+  }
+
+  /* Section text sizes */
+  .section-header h2 {
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+  /* Detail page title */
+  .detail-title-left h1 {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .detail-price-value {
+    font-size: 20px;
+  }
+
+  /* About stats in a grid */
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--unit-md);
+  }
+
+  .about-stat-value {
+    font-size: 22px;
+  }
+
+  /* Contact */
+  .contact-header h1 {
+    font-size: 22px;
+  }
+
+  /* Footer tighter */
+  .footer-main {
+    padding: 24px 16px 20px;
+  }
+
+  .footer-copyright {
+    padding: var(--unit-sm) 16px;
+  }
+
+  .footer-copyright p {
+    font-size: 11px;
+  }
+
+  .footer-bottom-links a {
+    font-size: 11px;
   }
 }
 

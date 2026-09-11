@@ -18,29 +18,59 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- Theme Toggle ---
-  const themeToggleBtn = document.getElementById('theme-toggle');
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
+  const themeToggleBtns = document.querySelectorAll('.theme-toggle-btn');
+  themeToggleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
       const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
       
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
     });
+  });
+  // Mobile menu toggle
+  function closeMobileMenu() {
+    if (hamburger && mobileMenu) {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
   }
 
-  // Mobile menu toggle
   if (hamburger && mobileMenu) {
     hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      mobileMenu.classList.toggle('open');
-      
-      const isExpanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
-      hamburger.setAttribute('aria-expanded', !isExpanded);
-      mobileMenu.setAttribute('aria-hidden', isExpanded);
-      
-      // Prevent scrolling when menu is open
-      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+      const isOpen = mobileMenu.classList.contains('open');
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        hamburger.classList.add('open');
+        mobileMenu.classList.add('open');
+        hamburger.setAttribute('aria-expanded', 'true');
+        mobileMenu.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+
+    // Close menu when clicking a nav link
+    const mobileNavLinks = mobileMenu.querySelectorAll('.mobile-nav-link, .mobile-cta-btn');
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    // Close menu on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+        closeMobileMenu();
+      }
+    });
+
+    // Close menu if screen resizes above mobile breakpoint
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768 && mobileMenu.classList.contains('open')) {
+        closeMobileMenu();
+      }
     });
   }
 
