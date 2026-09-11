@@ -15,6 +15,12 @@ $companyPhone = getSetting('company_phone_1', '+880 19 9242 4492');
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth" data-theme="dark">
 <head>
+  <script>
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= isset($pageTitle) ? sanitize($pageTitle) . ' | Good Car Imports' : 'Good Car Imports | Premium Vehicle Importers in Bangladesh' ?></title>

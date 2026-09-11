@@ -1399,7 +1399,7 @@
 .preorder-hero {
   position: relative;
   padding: 120px 0 80px;
-  background: linear-gradient(135deg, rgba(56, 55, 55, 0.55), rgba(84, 77, 77, 0.3)), url('../images/uploads/hero-car.jpg');
+  background: linear-gradient(135deg, rgba(56, 55, 55, 0.55), rgba(84, 77, 77, 0.3)), url('../images/uploads/lc300.jpg');
   background-size: cover;
   background-position: center;
   color: white;
@@ -2350,7 +2350,8 @@
 /* ====== RESPONSIVE DESIGN ====== */
 
 /* Prevent horizontal overflow globally */
-html, body {
+html,
+body {
   overflow-x: hidden;
 }
 

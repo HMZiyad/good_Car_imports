@@ -34,7 +34,7 @@ require_once __DIR__ . '/includes/header.php';
         </div>
       </div>
       <div class="about-hero-image">
-        <img src="<?= ASSETS_URL ?>/images/uploads/hero-car.jpg" alt="Good Car Imports Showroom">
+        <img src="<?= ASSETS_URL ?>/images/uploads/cross.jpg" alt="Good Car Imports Showroom">
       </div>
     </div>
   </div>

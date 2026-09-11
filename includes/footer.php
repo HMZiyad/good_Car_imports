@@ -35,7 +35,7 @@ $companyPhone1 = getSetting('company_phone_1', '+880 19 9242 4492');
           <ul class="footer-links">
             <li><a href="<?= SITE_URL ?>/about.php">About Us</a></li>
             <li><a href="<?= SITE_URL ?>/pre-order.php">Pre-Order Guide</a></li>
-            <li><a href="<?= SITE_URL ?>/inventory.php">Inventory</a></li>
+            <li><a href="<?= SITE_URL ?>/inventory.php">Stock</a></li>
           </ul>
         </div>
 
@@ -52,7 +52,7 @@ $companyPhone1 = getSetting('company_phone_1', '+880 19 9242 4492');
 
         <!-- Visit Us -->
         <div class="footer-col">
-          <h4 class="footer-heading">Visit Us</h4>
+          <h4 class="footer-heading">Our Office</h4>
           <p class="footer-address">Eastern Trade Center<br>56 VIP Rd, Dhaka 1205<br>Bangladesh</p>
           <div class="footer-social-labels" style="display:flex; gap:16px;">
             <a href="https://www.facebook.com/share/1GgiR3HrNP/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
