@@ -38,8 +38,8 @@ if ($action === 'add_vehicle') {
     $slug = generateSlug($carName . '-' . substr(preg_replace('/[^a-zA-Z0-9]/', '', $chassis), -6));
 
     // Handle File Uploads
-    $coverPhoto = null;
     $photoPaths = [];
+    $coverIndex = isset($_POST['cover_index']) ? (int)$_POST['cover_index'] : 0;
     
     if (!empty($_FILES['photos']['name'][0])) {
         foreach ($_FILES['photos']['tmp_name'] as $key => $tmp_name) {
@@ -54,12 +54,11 @@ if ($action === 'add_vehicle') {
             $uploadedPath = uploadImage($file, 'vehicles/' . date('Y-m'));
             if ($uploadedPath) {
                 $photoPaths[] = $uploadedPath;
-                if ($coverPhoto === null) {
-                    $coverPhoto = $uploadedPath; // First image is cover
-                }
             }
         }
     }
+
+    $coverPhoto = $photoPaths[$coverIndex] ?? ($photoPaths[0] ?? null);
 
     try {
         dbExecute('START TRANSACTION');
@@ -89,7 +88,7 @@ if ($action === 'add_vehicle') {
                 dbInsert('vehicle_photos', [
                     'vehicle_id' => $vehicleId,
                     'file_path'  => $path,
-                    'is_cover'   => ($index === 0 ? 1 : 0),
+                    'is_cover'   => ($index === $coverIndex ? 1 : 0),
                     'sort_order' => $index
                 ]);
             }
@@ -143,6 +142,11 @@ if ($action === 'add_vehicle') {
         if (!empty($vehicle['price_bdt'])) {
             $vehicle['price_bdt'] = (int)$vehicle['price_bdt'] / 100;
         }
+        $photos = dbFetchAll("SELECT file_path, is_cover, sort_order FROM vehicle_photos WHERE vehicle_id = ? ORDER BY sort_order ASC", [$id]);
+        foreach ($photos as &$p) {
+            $p['url'] = getUploadUrl($p['file_path']);
+        }
+        $vehicle['photos'] = $photos;
         jsonResponse(['success' => true, 'data' => $vehicle]);
     } else {
         jsonResponse(['success' => false, 'message' => 'Vehicle not found']);
@@ -160,8 +164,8 @@ if ($action === 'add_vehicle') {
         $chassis = sanitize($_POST['chassis_code'] ?? '');
 
         // Handle File Uploads
-        $coverPhoto = null;
         $photoPaths = [];
+        $coverIndex = isset($_POST['cover_index']) ? (int)$_POST['cover_index'] : 0;
         
         if (!empty($_FILES['photos']['name'][0])) {
             foreach ($_FILES['photos']['tmp_name'] as $key => $tmp_name) {
@@ -176,12 +180,11 @@ if ($action === 'add_vehicle') {
                 $uploadedPath = uploadImage($file, 'vehicles/' . date('Y-m'));
                 if ($uploadedPath) {
                     $photoPaths[] = $uploadedPath;
-                    if ($coverPhoto === null) {
-                        $coverPhoto = $uploadedPath; // First image is cover
-                    }
                 }
             }
         }
+        
+        $coverPhoto = $photoPaths[$coverIndex] ?? ($photoPaths[0] ?? null);
 
         $updateData = [
             'car_name'            => $carName,
@@ -199,18 +202,18 @@ if ($action === 'add_vehicle') {
             'is_featured'         => !empty($_POST['is_featured']) ? 1 : 0,
         ];
         
-        if ($coverPhoto !== null) {
-            $updateData['cover_photo'] = $coverPhoto;
-            
-            // Delete old gallery
-            dbExecute("DELETE FROM vehicle_photos WHERE vehicle_id = ?", [$id]);
-            
-            // Insert new gallery
+        $updateData['cover_photo'] = $coverPhoto;
+        
+        // Delete old gallery
+        dbExecute("DELETE FROM vehicle_photos WHERE vehicle_id = ?", [$id]);
+        
+        // Insert new gallery
+        if (!empty($photoPaths)) {
             foreach ($photoPaths as $index => $path) {
                 dbInsert('vehicle_photos', [
                     'vehicle_id' => $id,
                     'file_path'  => $path,
-                    'is_cover'   => ($index === 0 ? 1 : 0),
+                    'is_cover'   => ($index === $coverIndex ? 1 : 0),
                     'sort_order' => $index
                 ]);
             }

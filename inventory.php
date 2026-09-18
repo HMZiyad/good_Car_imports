@@ -123,7 +123,7 @@ $allBrands = dbFetchAll("SELECT DISTINCT brand FROM vehicles WHERE brand IS NOT 
           <div class="filter-group">
             <label>Body Type</label>
             <div class="filter-checkboxes">
-              <?php foreach (['SUV', 'Sedan', 'Hatchback', 'MPV'] as $type): ?>
+              <?php foreach (['SUV', 'Sedan', 'Hatchback', 'MPV', 'Crossover', 'Microbus'] as $type): ?>
                 <label class="filter-checkbox">
                   <input type="checkbox" name="body[]" value="<?= $type ?>"
                          <?= in_array($type, (array)$body) ? 'checked' : '' ?>>
@@ -149,7 +149,7 @@ $allBrands = dbFetchAll("SELECT DISTINCT brand FROM vehicles WHERE brand IS NOT 
           <div class="filter-group">
             <label>Auction Grade</label>
             <div class="filter-grade-pills">
-              <?php foreach (['4.0', '4.5', '5.0', 'S'] as $g): ?>
+              <?php foreach (['6.0', 'S', '5.0', '4.5', '4.0', '3.5', 'R'] as $g): ?>
                 <label class="grade-pill <?= in_array($g, (array)$grades) ? 'active' : '' ?>">
                   <input type="checkbox" name="grade[]" value="<?= $g ?>" hidden
                          <?= in_array($g, (array)$grades) ? 'checked' : '' ?>>
@@ -260,21 +260,21 @@ $allBrands = dbFetchAll("SELECT DISTINCT brand FROM vehicles WHERE brand IS NOT 
         <div class="vehicle-list" id="vehicle-list" style="display:none; width:100%; overflow-x:auto;">
           <table class="inventory-table" style="width:100%; border-collapse:collapse; background:var(--surface-container-lowest); border-radius:var(--radius-lg); overflow:hidden; border:1px solid var(--surface-container-high);">
             <thead>
-              <tr style="background:var(--surface-container-low); text-align:left; border-bottom:2px solid var(--surface-container-high);">
-                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">Car Name & Spec</th>
-                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">Package / Trim</th>
-                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">YOM</th>
-                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">Color</th>
-                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">Grade</th>
-                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">Mileage (KM)</th>
-                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase;">Trans.</th>
-                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:right;">Price</th>
+              <tr style="background:var(--surface-container-low); border-bottom:2px solid var(--surface-container-high);">
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:left;">Car Brand</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:center;">Package</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:center;">Year of Manufacture</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:center;">Color</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:center;">Grade</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:center;">Mileage (KM)</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:center;">Trans.</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:center;">Price</th>
               </tr>
             </thead>
             <tbody>
               <?php foreach ($vehicles as $v): ?>
-              <tr style="border-bottom:1px solid var(--surface-container-high); cursor:pointer; transition:background var(--transition-fast);" onclick="window.location.href='<?= SITE_URL ?>/vehicle.php?slug=<?= urlencode($v['slug']) ?>'" onmouseover="this.style.background='var(--surface-container)'" onmouseout="this.style.background='transparent'">
-                <td style="padding:16px; display:flex; align-items:center; gap:12px;">
+              <tr style="border-bottom:1px solid var(--surface-container-high); cursor:pointer; transition:background var(--transition-fast); text-align:center; vertical-align:middle;" onclick="window.location.href='<?= SITE_URL ?>/vehicle.php?slug=<?= urlencode($v['slug']) ?>'" onmouseover="this.style.background='var(--surface-container)'" onmouseout="this.style.background='transparent'">
+                <td style="padding:16px; display:flex; align-items:center; gap:12px; text-align:left;">
                   <img src="<?= getUploadUrl($v['cover_photo']) ?>" alt="Car" style="width:60px; height:40px; object-fit:cover; border-radius:4px;" onerror="this.onerror=null; this.src='<?= ASSETS_URL ?>/images/placeholder-car.svg'">
                   <div>
                     <div style="font-weight:600; font-size:14px; color:var(--on-surface);"><?= sanitize($v['car_name']) ?></div>
@@ -284,7 +284,7 @@ $allBrands = dbFetchAll("SELECT DISTINCT brand FROM vehicles WHERE brand IS NOT 
                 <td style="padding:16px; font-weight:500; font-size:14px;"><?= sanitize($v['package_trim'] ?? '-') ?></td>
                 <td style="padding:16px; font-weight:600; font-size:14px;"><?= (int)$v['year_of_manufacture'] ?></td>
                 <td style="padding:16px; font-size:14px;">
-                  <div style="display:flex; align-items:center; gap:6px;">
+                  <div style="display:flex; align-items:center; justify-content:center; gap:6px;">
                     <?php if($v['color_hex']): ?>
                       <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background-color:<?= sanitize($v['color_hex']) ?>; border:1px solid var(--surface-container-high);"></span>
                     <?php endif; ?>
@@ -296,7 +296,7 @@ $allBrands = dbFetchAll("SELECT DISTINCT brand FROM vehicles WHERE brand IS NOT 
                 </td>
                 <td style="padding:16px; font-family:monospace; font-size:14px;"><?= number_format((int)$v['mileage_km']) ?></td>
                 <td style="padding:16px; font-size:14px;"><?= sanitize($v['transmission'] ?? '-') ?></td>
-                <td style="padding:16px; font-weight:700; color:var(--primary); text-align:right;">
+                <td style="padding:16px; font-weight:700; color:var(--primary);">
                   <?= $v['price_bdt'] ? formatBDT($v['price_bdt'], true) : 'Call for Price' ?>
                 </td>
               </tr>

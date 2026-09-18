@@ -30,11 +30,11 @@
         <div class="form-section-title">Core Specifications</div>
         <div class="grid-2-col">
           <div class="form-group mandatory-field">
-            <label class="form-label">Car Name</label>
+            <label class="form-label">Car Brand and Specs</label>
             <input type="text" name="car_name" class="form-input" required placeholder="e.g. Toyota Land Cruiser 300">
           </div>
           <div class="form-group">
-            <label class="form-label">Package/Trim</label>
+            <label class="form-label">Package</label>
             <input type="text" name="package_trim" class="form-input" placeholder="e.g. ZX Modellista">
           </div>
           <div class="form-group mandatory-field">
@@ -57,8 +57,8 @@
             <label class="form-label">Auction Grade</label>
             <select name="auction_grade" class="form-select">
               <option value="">Select Grade</option>
-              <option value="6.0">6.0 (New/Unregistered)</option>
-              <option value="S">S (Like New)</option>
+              <option value="6.0">6.0 (Like New)</option>
+              <option value="S">S (Brand New)</option>
               <option value="5.0">5.0 (Excellent)</option>
               <option value="4.5">4.5 (Very Good)</option>
               <option value="4.0">4.0 (Good)</option>
@@ -82,13 +82,14 @@
               <option value="Hatchback">Hatchback</option>
               <option value="MPV">MPV</option>
               <option value="Crossover">Crossover</option>
+              <option value="Microbus">Microbus</option>
             </select>
           </div>
           <div class="form-group mandatory-field">
             <label class="form-label">Fuel Type</label>
             <select name="fuel_type" class="form-select" required>
               <option value="Petrol">Petrol</option>
-              <option value="Hybrid">Hybrid</option>
+              <option value="Petrol-Hybrid">Petrol-Hybrid</option>
               <option value="PHEV">PHEV</option>
               <option value="Diesel">Diesel</option>
               <option value="Electric">Electric</option>
@@ -98,7 +99,7 @@
             <label class="form-label">Target Stock Status</label>
             <select name="status" class="form-select" required>
               <option value="available">Available — Showroom</option>
-              <option value="port_clearance">Port Clearance (CTG)</option>
+              <option value="port_clearance">Port Clearance</option>
               <option value="vessel_transit">On Vessel Transit</option>
               <option value="reserved">Reserved</option>
               <option value="sold">Sold</option>
@@ -189,8 +190,8 @@
             <label class="form-label">Auction Grade</label>
             <select name="auction_grade" id="edit_auction_grade" class="form-select">
               <option value="">Select Grade</option>
-              <option value="6.0">6.0 (New/Unregistered)</option>
-              <option value="S">S (Like New)</option>
+              <option value="6.0">6.0 (Like New)</option>
+              <option value="S">S (Brand New)</option>
               <option value="5.0">5.0 (Excellent)</option>
               <option value="4.5">4.5 (Very Good)</option>
               <option value="4.0">4.0 (Good)</option>
@@ -214,13 +215,14 @@
               <option value="Hatchback">Hatchback</option>
               <option value="MPV">MPV</option>
               <option value="Crossover">Crossover</option>
+              <option value="Microbus">Microbus</option>
             </select>
           </div>
           <div class="form-group mandatory-field">
             <label class="form-label">Fuel Type</label>
             <select name="fuel_type" id="edit_fuel_type" class="form-select" required>
               <option value="Petrol">Petrol</option>
-              <option value="Hybrid">Hybrid</option>
+              <option value="Petrol-Hybrid">Petrol-Hybrid</option>
               <option value="PHEV">PHEV</option>
               <option value="Diesel">Diesel</option>
               <option value="Electric">Electric</option>
@@ -230,7 +232,7 @@
             <label class="form-label">Target Stock Status</label>
             <select name="status" id="edit_status" class="form-select" required>
               <option value="available">Available — Showroom</option>
-              <option value="port_clearance">Port Clearance (CTG)</option>
+              <option value="port_clearance">Port Clearance</option>
               <option value="vessel_transit">On Vessel Transit</option>
               <option value="reserved">Reserved</option>
               <option value="sold">Sold</option>
@@ -286,6 +288,14 @@ async function inlineSubmitEditVehicle() {
   
   try {
     const formData = new FormData(form);
+    
+    // Manually handle files to ensure they are sent
+    formData.delete('photos[]');
+    if (window.uploadZones && window.uploadZones['editDropZone']) {
+      const files = window.uploadZones['editDropZone'].getFiles();
+      files.forEach(f => formData.append('photos[]', f));
+      formData.set('cover_index', window.uploadZones['editDropZone'].getCoverIndex());
+    }
     
     const response = await fetch('../api/admin.php?action=edit_vehicle', {
       method: 'POST',

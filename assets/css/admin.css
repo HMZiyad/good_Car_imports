@@ -1040,3 +1040,378 @@ body {
 .pipeline-connector.active {
   background: var(--tertiary);
 }
+
+/* ====== ADMIN MOBILE HAMBURGER ====== */
+.admin-hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  color: var(--on-surface);
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: background var(--transition-fast);
+}
+
+.admin-hamburger:hover {
+  background: var(--surface-container);
+}
+
+.admin-hamburger .material-symbols-outlined {
+  font-size: 24px;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+
+/* ====== ADMIN RESPONSIVE DESIGN ====== */
+
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+  /* Sidebar collapses to off-canvas */
+  .admin-sidebar {
+    transform: translateX(-100%);
+    transition: transform var(--transition-base);
+  }
+
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: block;
+  }
+
+  .admin-main {
+    margin-left: 0;
+  }
+
+  .admin-hamburger {
+    display: flex;
+  }
+
+  /* Topbar adjustments */
+  .admin-topbar {
+    padding: 0 var(--unit-lg);
+    gap: var(--unit-sm);
+  }
+
+  .topbar-left {
+    gap: var(--unit-md);
+  }
+
+  .global-search {
+    width: 200px;
+  }
+
+  /* KPI grid */
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Dashboard widgets */
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Admin content padding */
+  .admin-content {
+    padding: var(--unit-lg);
+  }
+
+  /* Pipeline stepper wraps */
+  .pipeline-stepper {
+    flex-wrap: wrap;
+    gap: var(--unit-md);
+    padding: var(--unit-lg);
+  }
+
+  .pipeline-connector {
+    display: none;
+  }
+
+  .pipeline-step {
+    flex-direction: row;
+    gap: 12px;
+    width: calc(50% - var(--unit-sm));
+  }
+
+  /* Upload preview grid */
+  .upload-preview-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Topbar simplifies */
+  .admin-topbar {
+    height: 60px;
+    padding: 0 var(--unit-md);
+  }
+
+  .global-search {
+    display: none;
+  }
+
+  .status-pill {
+    display: none;
+  }
+
+  .page-title h1 {
+    font-size: 16px;
+  }
+
+  .page-subtitle {
+    display: none;
+  }
+
+  /* Admin content */
+  .admin-content {
+    padding: var(--unit-md);
+  }
+
+  /* KPI cards */
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--unit-md);
+  }
+
+  .kpi-value {
+    font-size: 22px;
+  }
+
+  /* Admin tabs scroll */
+  .admin-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: var(--unit-md);
+    padding-bottom: 1px;
+  }
+
+  .admin-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .admin-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Table toolbar stacks */
+  .table-toolbar {
+    flex-direction: column;
+    gap: var(--unit-sm);
+    align-items: stretch;
+  }
+
+  /* Table container ensures horizontal scroll */
+  .table-container {
+    border-radius: var(--radius-md);
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .td-car-img {
+    width: 40px;
+    height: 30px;
+  }
+
+  /* Touch-friendly icon buttons */
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Modals go full-screen on mobile */
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .modal-container {
+    max-width: 100%;
+    max-height: 95vh;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  }
+
+  .modal-header {
+    padding: var(--unit-md) var(--unit-lg);
+  }
+
+  .modal-title h2 {
+    font-size: 16px;
+  }
+
+  .modal-badge {
+    display: none;
+  }
+
+  .modal-body {
+    padding: var(--unit-lg);
+  }
+
+  .modal-footer {
+    padding: var(--unit-md) var(--unit-lg);
+    flex-direction: column;
+    gap: var(--unit-sm);
+  }
+
+  .modal-footer-note {
+    text-align: center;
+  }
+
+  .modal-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .modal-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Form grids go single column in modals */
+  .grid-2-col {
+    grid-template-columns: 1fr;
+  }
+
+  /* Upload preview grid */
+  .upload-preview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Pipeline stepper single column */
+  .pipeline-stepper {
+    padding: var(--unit-md);
+  }
+
+  .pipeline-step {
+    width: 100%;
+  }
+
+  /* Funnel widget */
+  .funnel-label {
+    width: 80px;
+    font-size: 11px;
+  }
+
+  /* Notification dropdown */
+  #notificationDropdown {
+    width: calc(100vw - 32px) !important;
+    right: -8px !important;
+    min-width: auto !important;
+  }
+
+  /* Search results dropdown */
+  #globalSearchResults {
+    min-width: auto !important;
+    width: calc(100vw - 32px) !important;
+  }
+}
+
+/* Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  .admin-topbar {
+    height: 56px;
+  }
+
+  .topbar-actions {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  /* KPI single column */
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-card {
+    padding: var(--unit-md);
+  }
+
+  .kpi-value {
+    font-size: 20px;
+  }
+
+  .kpi-progress-bar {
+    margin-top: var(--unit-sm);
+  }
+
+  /* Chart container */
+  .chart-container {
+    height: 180px;
+  }
+
+  /* Admin content */
+  .admin-content {
+    padding: var(--unit-sm);
+  }
+
+  /* Table cell components tighter */
+  .admin-table th,
+  .admin-table td {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .td-car {
+    gap: 8px;
+  }
+
+  .td-car-img {
+    width: 36px;
+    height: 28px;
+  }
+
+  .td-car-name {
+    font-size: 12px;
+  }
+
+  .td-car-spec {
+    font-size: 10px;
+  }
+
+  .status-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  /* Upload preview */
+  .upload-preview-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .upload-zone {
+    padding: var(--unit-lg);
+  }
+
+  .upload-zone .material-symbols-outlined {
+    font-size: 32px;
+  }
+}

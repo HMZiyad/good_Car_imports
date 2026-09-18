@@ -114,8 +114,8 @@ $statusBadgeHtml = getStatusBadge($vehicle['status']);
       <div class="detail-main">
         <!-- Gallery -->
         <div class="gallery-grid">
-          <div class="gallery-main">
-            <img src="<?= !empty($photos) ? getUploadUrl($photos[0]['file_path']) : ASSETS_URL . '/images/placeholder-car.svg' ?>" alt="<?= sanitize($pageTitle) ?>">
+          <div class="gallery-main" style="cursor:pointer;" onclick="openLightbox(0)">
+            <img id="main-gallery-img" src="<?= !empty($photos) ? getUploadUrl($photos[0]['file_path']) : ASSETS_URL . '/images/placeholder-car.svg' ?>" alt="<?= sanitize($pageTitle) ?>">
             <?php if (count($photos) > 1): ?>
               <div class="gallery-counter">
                 <span class="material-symbols-outlined" style="font-size:16px;">photo_library</span>
@@ -123,10 +123,10 @@ $statusBadgeHtml = getStatusBadge($vehicle['status']);
               </div>
             <?php endif; ?>
           </div>
-          <div class="gallery-side gallery-side-1">
+          <div class="gallery-side gallery-side-1" style="cursor:pointer;" onclick="openLightbox(1)">
             <img src="<?= count($photos) > 1 ? getUploadUrl($photos[1]['file_path']) : ASSETS_URL . '/images/placeholder-car.svg' ?>" alt="<?= sanitize($pageTitle) ?> angle 2">
           </div>
-          <div class="gallery-side gallery-side-2">
+          <div class="gallery-side gallery-side-2" style="cursor:pointer;" onclick="openLightbox(2)">
             <img src="<?= count($photos) > 2 ? getUploadUrl($photos[2]['file_path']) : ASSETS_URL . '/images/placeholder-car.svg' ?>" alt="<?= sanitize($pageTitle) ?> angle 3">
           </div>
         </div>
@@ -134,15 +134,11 @@ $statusBadgeHtml = getStatusBadge($vehicle['status']);
         <!-- Overview -->
         <div class="detail-overview">
           <h2>Vehicle Overview</h2>
-          <p><?= nl2br(sanitize($vehicle['description'] ?? 'No description available for this vehicle.')) ?></p>
+          <p></p>
         </div>
 
         <!-- Spec Table -->
         <dl class="spec-table">
-          <div class="spec-table-item">
-            <dt>Stock ID</dt>
-            <dd><?= sanitize($vehicle['stock_id'] ?? 'N/A') ?></dd>
-          </div>
           <div class="spec-table-item">
             <dt>Chassis Code</dt>
             <dd><?= sanitize($vehicle['chassis_code']) ?></dd>
@@ -163,14 +159,6 @@ $statusBadgeHtml = getStatusBadge($vehicle['status']);
             <dd><?= sanitize($vehicle['transmission'] ?? 'N/A') ?></dd>
           </div>
           <div class="spec-table-item">
-            <dt>Drive Train</dt>
-            <dd><?= sanitize($vehicle['drive_train'] ?? 'N/A') ?></dd>
-          </div>
-          <div class="spec-table-item">
-            <dt>Seats</dt>
-            <dd><?= (int)$vehicle['seats'] ?> Seats</dd>
-          </div>
-          <div class="spec-table-item">
             <dt>Body Type</dt>
             <dd><?= sanitize($vehicle['body_type']) ?></dd>
           </div>
@@ -179,6 +167,23 @@ $statusBadgeHtml = getStatusBadge($vehicle['status']);
             <dd><?= $statusBadgeHtml ?></dd>
           </div>
         </dl>
+
+        <!-- Full Thumbnail Gallery -->
+        <?php if (!empty($photos)): ?>
+        <div class="detail-gallery-thumbnails" style="margin-top:40px;">
+          <h3 style="font-size:18px; margin-bottom:16px;">All Photos</h3>
+          <div style="display:flex; gap:12px; overflow-x:auto; padding-bottom:12px; scrollbar-width:thin;">
+            <?php foreach ($photos as $index => $photo): ?>
+              <img src="<?= getUploadUrl($photo['file_path']) ?>" 
+                   alt="<?= sanitize($pageTitle) ?> photo <?= $index + 1 ?>"
+                   style="width:120px; height:80px; object-fit:cover; border-radius:var(--radius-sm); cursor:pointer; border:2px solid transparent; transition:border-color 0.2s; background:var(--surface-container);"
+                   onclick="openLightbox(<?= $index ?>)"
+                   onmouseover="this.style.borderColor='var(--primary)'"
+                   onmouseout="this.style.borderColor='transparent'">
+            <?php endforeach; ?>
+          </div>
+        </div>
+        <?php endif; ?>
 
 
       </div>
@@ -222,13 +227,13 @@ $statusBadgeHtml = getStatusBadge($vehicle['status']);
           <h3>Vehicle Location</h3>
           <div class="location-card-map">
             <!-- Map iframe for Office -->
-            <iframe src="https://maps.google.com/maps?q=23.7369831,90.4123104&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe src="https://maps.google.com/maps?q=56+Inner+Circular+Road+Eastern+Trade+Center+Dhaka&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
           <div class="location-card-address">
             <span class="material-symbols-outlined">location_on</span>
             <span>
               <strong>Our Office</strong><br>
-              <?= sanitize(getSetting('company_address_1', 'Eastern Trade Center, 56 VIP Rd, Dhaka 1205')) ?>
+              <?= nl2br(sanitize("56 Inner Circular Road\nEastern Trade Center (6 Floor)\nPurana Paltan Line Dhaka-1000")) ?>
             </span>
           </div>
         </div>
@@ -309,6 +314,172 @@ function switchTab(tabId) {
   // Add active to clicked button (using event.target)
   event.target.classList.add('active');
 }
+
+// Lightbox Logic
+const galleryPhotos = <?= json_encode(array_map(function($p) { return getUploadUrl($p['file_path']); }, $photos)) ?>;
+let currentLightboxIndex = 0;
+
+function openLightbox(index) {
+  if (galleryPhotos.length === 0 || index >= galleryPhotos.length) return;
+  currentLightboxIndex = index;
+  document.getElementById('lightbox-modal').style.display = 'flex';
+  updateLightbox();
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox-modal').style.display = 'none';
+}
+
+function changeLightbox(dir) {
+  currentLightboxIndex += dir;
+  if (currentLightboxIndex < 0) currentLightboxIndex = galleryPhotos.length - 1;
+  if (currentLightboxIndex >= galleryPhotos.length) currentLightboxIndex = 0;
+  updateLightbox();
+}
+
+function updateLightbox() {
+  document.getElementById('lightbox-img').src = galleryPhotos[currentLightboxIndex];
+  document.getElementById('lightbox-counter').innerText = (currentLightboxIndex + 1) + " / " + galleryPhotos.length;
+}
+
+// Keyboard navigation for lightbox
+document.addEventListener('keydown', function(e) {
+  if (document.getElementById('lightbox-modal').style.display === 'flex') {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changeLightbox(-1);
+    if (e.key === 'ArrowRight') changeLightbox(1);
+  }
+});
 </script>
+
+<!-- Lightbox Modal -->
+<style>
+  .lightbox-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    user-select: none;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+  }
+  .lightbox-close .material-symbols-outlined {
+    font-size: 28px;
+  }
+  .lightbox-nav {
+    position: absolute;
+    color: white;
+    cursor: pointer;
+    padding: 12px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 48px;
+    height: 48px;
+    transition: background 0.2s;
+  }
+  .lightbox-nav:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+  .lightbox-nav.prev { left: 12px; }
+  .lightbox-nav.next { right: 12px; }
+  .lightbox-nav .material-symbols-outlined {
+    font-size: 32px;
+  }
+  .lightbox-img {
+    max-width: 90%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  .lightbox-counter {
+    color: var(--secondary);
+    margin-top: 16px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  @media (max-width: 768px) {
+    .lightbox-nav {
+      width: 40px;
+      height: 40px;
+      padding: 8px;
+    }
+    .lightbox-nav .material-symbols-outlined {
+      font-size: 24px;
+    }
+    .lightbox-nav.prev { left: 6px; }
+    .lightbox-nav.next { right: 6px; }
+    .lightbox-close {
+      top: 8px;
+      right: 8px;
+      width: 40px;
+      height: 40px;
+    }
+    .lightbox-close .material-symbols-outlined {
+      font-size: 24px;
+    }
+    .lightbox-img {
+      max-width: 96%;
+      max-height: 75vh;
+      border-radius: 4px;
+    }
+  }
+  @media (max-width: 480px) {
+    .lightbox-nav {
+      width: 36px;
+      height: 36px;
+    }
+    .lightbox-nav .material-symbols-outlined {
+      font-size: 20px;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 0;
+    }
+  }
+</style>
+
+<div id="lightbox-modal" class="lightbox-modal">
+  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close lightbox">
+    <span class="material-symbols-outlined">close</span>
+  </button>
+  
+  <button class="lightbox-nav prev" onclick="changeLightbox(-1)" aria-label="Previous photo">
+    <span class="material-symbols-outlined">chevron_left</span>
+  </button>
+  
+  <img id="lightbox-img" class="lightbox-img" src="" alt="Vehicle photo">
+  
+  <button class="lightbox-nav next" onclick="changeLightbox(1)" aria-label="Next photo">
+    <span class="material-symbols-outlined">chevron_right</span>
+  </button>
+
+  <div id="lightbox-counter" class="lightbox-counter"></div>
+</div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

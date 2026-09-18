@@ -40,7 +40,7 @@ $sales = dbFetchAll(
     <table class="admin-table">
       <thead>
         <tr>
-          <th style="width: 250px;">Car Name</th>
+          <th style="width: 250px;">Car Brand</th>
           <th>Chassis Code</th>
           <th>Client Area</th>
           <th>Sale Date</th>

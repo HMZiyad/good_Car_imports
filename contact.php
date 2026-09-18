@@ -11,7 +11,7 @@ require_once __DIR__ . '/includes/header.php';
 $companyPhone1 = getSetting('company_phone_1', '+880 19 9242 4492');
 $companyPhone2 = getSetting('company_phone_2', '');
 $companyEmail = getSetting('company_email', 'goodcarimports.bd@gmail.com');
-$address1 = getSetting('company_address_1', 'Eastern Trade Center, 56 VIP Rd, Dhaka 1205');
+$address1 = "56 Inner Circular Road\nEastern Trade Center (6 Floor)\nPurana Paltan Line Dhaka-1000";
 $address2 = getSetting('company_address_2', '');
 $businessHours = getSetting('business_hours', 'Sat - Thu: 10:00 AM - 8:00 PM');
 $businessHoursNote = getSetting('business_hours_note', 'Friday: Closed (By Appointment Only)');
@@ -75,8 +75,8 @@ $whatsappNumber = getSetting('whatsapp_number', '+8801992424492');
         <!-- Map -->
         <div class="contact-map" style="position: relative;">
           <!-- Map iframe -->
-          <iframe src="https://maps.google.com/maps?q=23.7369831,90.4123104&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          <a href="https://maps.app.goo.gl/ScTBeSJhmgFD5bKD8" target="_blank" class="contact-map-link">
+          <iframe src="https://maps.google.com/maps?q=56+Inner+Circular+Road+Eastern+Trade+Center+Dhaka&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <a href="https://www.google.com/maps/search/56+Inner+Circular+Road+Eastern+Trade+Center+Dhaka" target="_blank" class="contact-map-link">
             Open in Google Maps <span class="material-symbols-outlined" style="font-size: 16px;">open_in_new</span>
           </a>
         </div>
@@ -85,7 +85,7 @@ $whatsappNumber = getSetting('whatsapp_number', '+8801992424492');
         <div class="contact-locations">
           <div class="contact-location-item" style="width: 100%;">
             <h3>Our Location</h3>
-            <p><?= sanitize($address1) ?></p>
+            <p><?= nl2br(sanitize($address1)) ?></p>
           </div>
         </div>
 

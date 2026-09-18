@@ -114,9 +114,9 @@ $vehicles = dbFetchAll(
     <table class="admin-table">
       <thead>
         <tr>
-          <th style="width: 250px;">Car Name & Spec</th>
-          <th>Package / Trim</th>
-          <th>YOM</th>
+          <th style="width: 250px;">Car Brand</th>
+          <th>Package</th>
+          <th>Year of Manufacture</th>
           <th>Color</th>
           <th>Grade</th>
           <th>Mileage (KM)</th>

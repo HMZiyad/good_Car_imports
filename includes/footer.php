@@ -46,14 +46,14 @@ $companyPhone1 = getSetting('company_phone_1', '+880 19 9242 4492');
             <li><a href="<?= SITE_URL ?>/contact.php">Contact Us</a></li>
             <li><a href="https://docs.google.com/document/d/1Fqx_vl7sMP8jyfp4x6pYzmHDwhBSvaDvqjdTAbK03nI/edit?usp=sharing" target="_blank" rel="noopener">Privacy Policy</a></li>
             <li><a href="https://docs.google.com/document/d/1dvv8cqIU6Ee7CXW6PNRLviD_EvROJNdwj7Q3l212oHU/edit?usp=sharing" target="_blank" rel="noopener">Terms of Service</a></li>
-            <li><a href="https://www.google.com/maps/search/Eastern+Trade+Center+56+VIP+Rd+Dhaka+1205" target="_blank" rel="noopener">Locate Us</a></li>
+            <li><a href="https://www.google.com/maps/search/56+Inner+Circular+Road+Eastern+Trade+Center" target="_blank" rel="noopener">Locate Us</a></li>
           </ul>
         </div>
 
         <!-- Visit Us -->
         <div class="footer-col">
           <h4 class="footer-heading">Our Office</h4>
-          <p class="footer-address">Eastern Trade Center<br>56 VIP Rd, Dhaka 1205<br>Bangladesh</p>
+          <p class="footer-address">56 Inner Circular Road<br>Eastern Trade Center (6 Floor)<br>Purana Paltan Line Dhaka-1000</p>
           <div class="footer-social-labels" style="display:flex; gap:16px;">
             <a href="https://www.facebook.com/share/1GgiR3HrNP/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-3 7h-1.924c-.615 0-1.076.252-1.076.889v1.111h3l-.238 3h-2.762v8h-3v-8h-2v-3h2v-1.923c0-2.022 1.064-3.077 3.461-3.077h2.539v3z"/></svg>
@@ -74,7 +74,7 @@ $companyPhone1 = getSetting('company_phone_1', '+880 19 9242 4492');
           <a href="https://docs.google.com/document/d/1dvv8cqIU6Ee7CXW6PNRLviD_EvROJNdwj7Q3l212oHU/edit?usp=sharing" target="_blank" rel="noopener">Terms of Service</a>
           <a href="https://docs.google.com/document/d/1Fqx_vl7sMP8jyfp4x6pYzmHDwhBSvaDvqjdTAbK03nI/edit?usp=sharing" target="_blank" rel="noopener">Privacy Policy</a>
           <a href="<?= SITE_URL ?>/contact.php">Contact Us</a>
-          <a href="https://www.google.com/maps/search/Eastern+Trade+Center+56+VIP+Rd+Dhaka+1205" target="_blank" rel="noopener">Locate Us</a>
+          <a href="https://www.google.com/maps/search/56+Inner+Circular+Road+Eastern+Trade+Center" target="_blank" rel="noopener">Locate Us</a>
         </div>
       </div>
     </div>

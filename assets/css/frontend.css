@@ -2221,7 +2221,7 @@
 }
 
 .footer-main {
-  padding: 48px 48px 32px;
+  padding: 48px var(--margin-desktop) 32px;
 }
 
 .footer-grid {
@@ -2317,7 +2317,7 @@
 
 .footer-copyright {
   border-top: 1px solid var(--surface-container-high);
-  padding: var(--unit-md) 48px;
+  padding: var(--unit-md) var(--margin-desktop);
 }
 
 .footer-copyright-inner {
@@ -2353,6 +2353,33 @@
 html,
 body {
   overflow-x: hidden;
+}
+
+/* Large Tablet / Small Laptop (max-width: 1280px) */
+@media (max-width: 1280px) {
+  .trust-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .process-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1.5fr 1fr 1fr;
+  }
+
+  .detail-content {
+    grid-template-columns: 1fr 340px;
+  }
+
+  .spec-table {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 /* Tablet (max-width: 1024px) */
@@ -2750,6 +2777,44 @@ body {
     font-size: 14px;
   }
 
+  .cta-buttons {
+    flex-direction: column;
+  }
+
+  .cta-buttons .btn-cta-primary,
+  .cta-buttons .btn-cta-secondary {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* Feature tab scroll indicator */
+  .feature-tab-nav {
+    position: relative;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .feature-tab-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Form stepper scroll indicator */
+  .form-stepper {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .form-stepper::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Gallery thumbnails touch-friendly */
+  .detail-gallery-thumbnails img {
+    min-width: 100px;
+    min-height: 68px;
+  }
+
   /* Footer */
   .footer-main {
     padding: 32px 20px 24px;
@@ -2866,17 +2931,6 @@ body {
 
   .quick-spec-item:last-child {
     border-bottom: none;
-  }
-
-  .cta-buttons {
-    flex-direction: column;
-  }
-
-  .cta-buttons .btn-cta-primary,
-  .cta-buttons .btn-cta-secondary {
-    width: 100%;
-    text-align: center;
-    justify-content: center;
   }
 
   /* Specs bar stacks fully */

@@ -123,7 +123,7 @@ $pendingInward = dbFetchAll("SELECT * FROM stock_inward WHERE current_stage IN (
   <!-- Main Dashboard Widgets (Removed Dummy Data) -->
 
   <!-- Bottom Data Widgets -->
-  <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr;">
+  <div class="dashboard-grid">
     
     <!-- Recent Delivered Sales -->
     <div class="widget-card">

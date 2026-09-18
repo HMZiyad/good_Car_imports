@@ -216,7 +216,7 @@ INSERT INTO `settings` (`setting_key`, `setting_value`, `setting_type`, `descrip
 ('company_phone_1', '+880 19 9242 4492', 'string', 'Primary phone number'),
 ('company_phone_2', '', 'string', 'Secondary phone number'),
 ('company_email', 'goodcarimports.bd@gmail.com', 'string', 'Company email'),
-('company_address_1', 'Eastern Trade Center, 56 VIP Rd, Dhaka 1205', 'string', 'Baridhara Showroom address'),
+('company_address_1', '56 Inner Circular Road\nEastern Trade Center (6 Floor)\nPurana Paltan Line Dhaka-1000', 'string', 'Baridhara Showroom address'),
 ('company_address_2', '', 'string', 'Tejgaon Service Center address'),
 ('whatsapp_number', '+8801992424492', 'string', 'WhatsApp contact number'),
 ('business_hours', 'Sat - Thu: 10:00 AM - 8:00 PM', 'string', 'Operating hours'),

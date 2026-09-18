@@ -136,7 +136,7 @@
   --unit-lg: 24px;
   --unit-xl: 48px;
   --gutter: 24px;
-  --container-max: 100%;
+  --container-max: 1440px;
   --margin-desktop: 64px;
   --margin-mobile: 20px;
 
@@ -254,6 +254,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -289,6 +290,11 @@ button {
   background: none;
   font-family: inherit;
   font-size: inherit;
+  touch-action: manipulation;
+}
+
+a, label, input, textarea, select {
+  touch-action: manipulation;
 }
 
 input, textarea, select {

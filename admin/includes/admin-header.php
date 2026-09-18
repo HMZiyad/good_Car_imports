@@ -31,6 +31,9 @@ $totalNotifications = $newInquiriesCount + $newPreOrdersCount;
 
 <div class="admin-layout">
   
+  <!-- Sidebar Overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  
   <!-- ===== SIDEBAR ===== -->
   <aside class="admin-sidebar">
     <div class="sidebar-header">
@@ -90,7 +93,7 @@ $totalNotifications = $newInquiriesCount + $newPreOrdersCount;
     <div class="sidebar-footer">
       <ul class="sidebar-nav-list" style="margin-bottom: 16px;">
         <li class="sidebar-nav-item">
-          <a href="../api/auth.php?action=logout" class="sidebar-nav-link" style="color: var(--error);">
+          <a href="logout.php" class="sidebar-nav-link" style="color: var(--error);">
             <span class="material-symbols-outlined">logout</span>
             Logout
           </a>
@@ -113,6 +116,9 @@ $totalNotifications = $newInquiriesCount + $newPreOrdersCount;
     <!-- Top Navbar -->
     <header class="admin-topbar">
       <div class="topbar-left">
+        <button class="admin-hamburger" id="adminHamburger" aria-label="Toggle sidebar menu">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
         <div class="page-title">
           <h1><?= sanitize($pageTitle ?? 'Dashboard') ?></h1>
           <div class="page-subtitle"><?= sanitize($pageSubtitle ?? 'Good Car Imports Executive Portal') ?></div>
@@ -123,7 +129,7 @@ $totalNotifications = $newInquiriesCount + $newPreOrdersCount;
           <input type="text" id="globalSearchInput" placeholder="Global Search (VIN, Chassis, Model)..." autocomplete="off">
           <span class="search-shortcut">⌘K</span>
           
-          <div id="globalSearchResults" class="search-results-dropdown" style="display:none; position:absolute; top:100%; left:0; width:100%; min-width:350px; background:var(--surface-container-lowest); box-shadow:var(--shadow-modal); border-radius:var(--radius-md); margin-top:8px; z-index:1000; max-height:400px; overflow-y:auto; border:1px solid var(--surface-container-high);">
+          <div id="globalSearchResults" class="search-results-dropdown" style="display:none; position:absolute; top:100%; left:0; width:100%; background:var(--surface-container-lowest); box-shadow:var(--shadow-modal); border-radius:var(--radius-md); margin-top:8px; z-index:1000; max-height:400px; overflow-y:auto; border:1px solid var(--surface-container-high);">
           </div>
         </div>
       </div>
@@ -179,7 +185,7 @@ $totalNotifications = $newInquiriesCount + $newPreOrdersCount;
             <?php endif; ?>
           </button>
           
-          <div id="notificationDropdown" style="display:none; position:absolute; top:100%; right:0; width:300px; background:var(--surface-container-lowest); box-shadow:var(--shadow-modal); border-radius:var(--radius-md); margin-top:8px; z-index:1000; border:1px solid var(--surface-container-high);">
+          <div id="notificationDropdown" style="display:none; position:absolute; top:100%; right:0; width:300px; max-width:calc(100vw - 32px); background:var(--surface-container-lowest); box-shadow:var(--shadow-modal); border-radius:var(--radius-md); margin-top:8px; z-index:1000; border:1px solid var(--surface-container-high);">
             <div style="padding:12px 16px; border-bottom:1px solid var(--surface-container-high); font-weight:600; font-size:14px; display:flex; justify-content:space-between; align-items:center;">
               Recent Activities
             </div>
