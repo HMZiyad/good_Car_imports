@@ -20,6 +20,25 @@ $monthlySalesResult = dbFetchOne("SELECT COUNT(*) as units, SUM(sale_price_bdt) 
 $monthlyUnits = $monthlySalesResult['units'] ?? 0;
 $monthlyRevenue = $monthlySalesResult['total'] ?? 0;
 
+// Calculate Growth: Revenue (Current Year vs Last Year)
+$cyr = dbFetchOne("SELECT SUM(sale_price_bdt) as total FROM sales WHERE payment_status IN ('cleared', 'lc_settlement') AND YEAR(sale_date) = ?", [$currentYear]);
+$lyr = dbFetchOne("SELECT SUM(sale_price_bdt) as total FROM sales WHERE payment_status IN ('cleared', 'lc_settlement') AND YEAR(sale_date) = ?", [$currentYear - 1]);
+$currentYearRev = $cyr['total'] ?? 0;
+$lastYearRev = $lyr['total'] ?? 0;
+$revenueGrowth = ($lastYearRev == 0) ? (($currentYearRev > 0) ? 100 : 0) : (($currentYearRev - $lastYearRev) / $lastYearRev) * 100;
+$revGrowthIcon = $revenueGrowth >= 0 ? 'trending_up' : 'trending_down';
+$revGrowthClass = $revenueGrowth >= 0 ? 'positive' : 'negative';
+
+// Calculate Growth: Monthly Sales (Current Month vs Last Month)
+$lastMonthDate = strtotime('-1 month');
+$lastMonth = date('m', $lastMonthDate);
+$lastMonthYear = date('Y', $lastMonthDate);
+$lastMonthSalesResult = dbFetchOne("SELECT SUM(sale_price_bdt) as total FROM sales WHERE MONTH(sale_date) = ? AND YEAR(sale_date) = ?", [$lastMonth, $lastMonthYear]);
+$lastMonthRevenue = $lastMonthSalesResult['total'] ?? 0;
+$monthlyGrowth = ($lastMonthRevenue == 0) ? (($monthlyRevenue > 0) ? 100 : 0) : (($monthlyRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100;
+$monthlyGrowthIcon = $monthlyGrowth >= 0 ? 'trending_up' : 'trending_down';
+$monthlyGrowthClass = $monthlyGrowth >= 0 ? 'positive' : 'negative';
+
 // 3. Live Inventory Stock
 $stockCount = dbCount('vehicles', "status IN ('available', 'port_clearance', 'vessel_transit')");
 $showroomCount = dbCount('vehicles', "status = 'available'");
@@ -29,6 +48,18 @@ $transitCount = dbCount('vehicles', "status = 'vessel_transit'");
 // 4. Web Traffic & Inquiries
 $totalInquiries = dbCount('inquiries');
 $totalPreOrders = dbCount('pre_orders');
+
+// Calculate Growth: Leads (Current Month vs Last Month)
+$currentMonthInq = dbCount('inquiries', "MONTH(created_at) = ? AND YEAR(created_at) = ?", [$currentMonth, $currentYear]);
+$currentMonthPre = dbCount('pre_orders', "MONTH(created_at) = ? AND YEAR(created_at) = ?", [$currentMonth, $currentYear]);
+$currLeads = $currentMonthInq + $currentMonthPre;
+
+$lastMonthInq = dbCount('inquiries', "MONTH(created_at) = ? AND YEAR(created_at) = ?", [$lastMonth, $lastMonthYear]);
+$lastMonthPre = dbCount('pre_orders', "MONTH(created_at) = ? AND YEAR(created_at) = ?", [$lastMonth, $lastMonthYear]);
+$lastLeads = $lastMonthInq + $lastMonthPre;
+$leadsGrowth = ($lastLeads == 0) ? (($currLeads > 0) ? 100 : 0) : (($currLeads - $lastLeads) / $lastLeads) * 100;
+$leadsGrowthIcon = $leadsGrowth >= 0 ? 'trending_up' : 'trending_down';
+$leadsGrowthClass = $leadsGrowth >= 0 ? 'positive' : 'negative';
 
 // Recent Sales Widget
 $recentSales = dbFetchAll("SELECT * FROM sales ORDER BY sale_date DESC LIMIT 3");
@@ -54,8 +85,8 @@ $pendingInward = dbFetchAll("SELECT * FROM stock_inward WHERE current_stage IN (
       </div>
       <div class="kpi-value"><?= formatBDT((int)$totalRevenue, true) ?></div>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <span class="kpi-trend positive">
-          <span class="material-symbols-outlined">trending_up</span> +14.2%
+        <span class="kpi-trend <?= $revGrowthClass ?>">
+          <span class="material-symbols-outlined"><?= $revGrowthIcon ?></span> <?= ($revenueGrowth >= 0 ? '+' : '') . number_format($revenueGrowth, 1) ?>%
         </span>
         <span style="font-size:12px; color:var(--secondary);">vs last year</span>
       </div>
@@ -72,8 +103,8 @@ $pendingInward = dbFetchAll("SELECT * FROM stock_inward WHERE current_stage IN (
       </div>
       <div class="kpi-value"><?= formatBDT((int)$monthlyRevenue, true) ?></div>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <span class="kpi-trend positive">
-          <span class="material-symbols-outlined">trending_up</span> +8.5%
+        <span class="kpi-trend <?= $monthlyGrowthClass ?>">
+          <span class="material-symbols-outlined"><?= $monthlyGrowthIcon ?></span> <?= ($monthlyGrowth >= 0 ? '+' : '') . number_format($monthlyGrowth, 1) ?>%
         </span>
         <span style="font-size:12px; color:var(--secondary);"><?= $monthlyUnits ?> Units Sold</span>
       </div>
@@ -109,8 +140,8 @@ $pendingInward = dbFetchAll("SELECT * FROM stock_inward WHERE current_stage IN (
       </div>
       <div class="kpi-value"><?= $totalPreOrders ?> <span style="font-size:16px; font-weight:600; color:var(--secondary);">Leads</span></div>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <span class="kpi-trend positive">
-          <span class="material-symbols-outlined">trending_up</span> +28.4%
+        <span class="kpi-trend <?= $leadsGrowthClass ?>">
+          <span class="material-symbols-outlined"><?= $leadsGrowthIcon ?></span> <?= ($leadsGrowth >= 0 ? '+' : '') . number_format($leadsGrowth, 1) ?>%
         </span>
         <span style="font-size:12px; color:var(--secondary);"><?= $totalInquiries ?> Gen. Inquiries</span>
       </div>

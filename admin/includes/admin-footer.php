@@ -70,6 +70,10 @@
             <label class="form-label">Transmission</label>
             <input type="text" name="transmission" class="form-input" placeholder="e.g. AT, CVT">
           </div>
+          <div class="form-group">
+            <label class="form-label">Engine CC</label>
+            <input type="number" name="engine_cc" class="form-input" placeholder="e.g. 1500" min="0">
+          </div>
         </div>
 
         <div class="form-section-title">Additional Details & Pricing</div>
@@ -202,6 +206,10 @@
           <div class="form-group">
             <label class="form-label">Transmission</label>
             <input type="text" name="transmission" id="edit_transmission" class="form-input" placeholder="e.g. AT, CVT">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Engine CC</label>
+            <input type="number" name="engine_cc" id="edit_engine_cc" class="form-input" placeholder="e.g. 1500" min="0">
           </div>
         </div>
 

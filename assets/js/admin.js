@@ -460,6 +460,7 @@ async function openEditVehicleModal(id) {
       document.getElementById('edit_mileage_km').value = v.mileage_km;
       document.getElementById('edit_auction_grade').value = v.auction_grade || '';
       document.getElementById('edit_transmission').value = v.transmission || '';
+      document.getElementById('edit_engine_cc').value = v.engine_cc || '';
       document.getElementById('edit_body_type').value = v.body_type || 'SUV';
       document.getElementById('edit_fuel_type').value = v.fuel_type || 'Petrol';
       document.getElementById('edit_status').value = v.status || 'available';
