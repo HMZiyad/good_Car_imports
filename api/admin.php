@@ -79,6 +79,7 @@ if ($action === 'add_vehicle') {
             'fuel_type'           => sanitize($_POST['fuel_type'] ?? 'Petrol'),
             'status'              => sanitize($_POST['status'] ?? 'available'),
             'price_bdt'           => !empty($_POST['price_bdt']) ? (int)$_POST['price_bdt'] * 100 : null,
+            'description'         => !empty($_POST['description']) ? trim($_POST['description']) : null,
             'is_featured'         => !empty($_POST['is_featured']) ? 1 : 0,
             'cover_photo'         => $coverPhoto
         ]);
@@ -201,6 +202,7 @@ if ($action === 'add_vehicle') {
             'fuel_type'           => sanitize($_POST['fuel_type'] ?? 'Petrol'),
             'status'              => $status,
             'price_bdt'           => $priceBdt,
+            'description'         => !empty($_POST['description']) ? trim($_POST['description']) : null,
             'is_featured'         => !empty($_POST['is_featured']) ? 1 : 0,
         ];
         

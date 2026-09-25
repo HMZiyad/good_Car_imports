@@ -111,33 +111,41 @@ $vehicles = dbFetchAll(
       </div>
     </div>
 
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th style="width: 250px;">Car Brand</th>
-          <th>Package</th>
-          <th>Year of Manufacture</th>
-          <th>Color</th>
-          <th>Grade</th>
-          <th>Mileage (KM)</th>
-          <th>Chassis Code</th>
-          <th>Trans.</th>
-          <th>Status</th>
-          <th style="text-align:right;">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($vehicles as $v): ?>
-        <tr>
-          <td>
-            <div class="td-car">
-              <img src="<?= getUploadUrl($v['cover_photo']) ?>" alt="Car" class="td-car-img" onerror="this.onerror=null; this.src='<?= ASSETS_URL ?>/images/placeholder-car.svg'">
-              <div class="td-car-info">
-                <span class="td-car-name"><?= sanitize($v['car_name']) ?></span>
-                <span class="td-car-spec"><?= sanitize($v['engine_spec'] ?? $v['engine_cc'].'cc') ?></span>
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th style="width: 250px;">Car Brand</th>
+            <th>Package</th>
+            <th>Year of Manufacture</th>
+            <th>Color</th>
+            <th>Grade</th>
+            <th>Mileage (KM)</th>
+            <th>Engine CC</th>
+            <th>Chassis Code</th>
+            <th>Trans.</th>
+            <th>Status</th>
+            <th style="text-align:center;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($vehicles as $v): ?>
+          <tr>
+            <td>
+              <div class="td-car">
+                <img src="<?= getUploadUrl($v['cover_photo']) ?>" alt="Car" class="td-car-img" onerror="this.onerror=null; this.src='<?= ASSETS_URL ?>/images/placeholder-car.svg'">
+                <div class="td-car-info">
+                  <span class="td-car-name">
+                    <?php
+                      $words = explode(' ', sanitize($v['car_name']));
+                      $firstLine = implode(' ', array_slice($words, 0, 2));
+                      $secondLine = implode(' ', array_slice($words, 2));
+                      echo $firstLine . ($secondLine ? '<br>' . $secondLine : '');
+                    ?>
+                  </span>
+                </div>
               </div>
-            </div>
-          </td>
+            </td>
           <td style="font-weight:500;"><?= sanitize($v['package_trim'] ?? '-') ?></td>
           <td>
             <div style="font-weight:600;"><?= (int)$v['year_of_manufacture'] ?></div>
@@ -146,7 +154,7 @@ $vehicles = dbFetchAll(
             <?php endif; ?>
           </td>
           <td>
-            <div style="display:flex; align-items:center; gap:6px;">
+            <div style="display:flex; align-items:center; justify-content:center; gap:6px;">
               <?php if($v['color_hex']): ?>
                 <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background-color:<?= sanitize($v['color_hex']) ?>; border:1px solid var(--surface-container-high);"></span>
               <?php endif; ?>
@@ -157,13 +165,14 @@ $vehicles = dbFetchAll(
             <span class="grade-pill" style="font-size:11px; padding:2px 8px; border-radius:4px; font-weight:700; background:var(--surface-container-high);"><?= sanitize($v['auction_grade'] ?? '-') ?></span>
           </td>
           <td style="font-family:monospace;"><?= number_format((int)$v['mileage_km']) ?></td>
+          <td><?= $v['engine_cc'] ? number_format((int)$v['engine_cc']) . 'cc' : '-' ?></td>
           <td>
             <span class="chassis-pill"><?= sanitize($v['chassis_code']) ?></span>
           </td>
           <td style="font-size:13px;"><?= sanitize($v['transmission'] ?? '-') ?></td>
           <td><?= getStatusBadge($v['status']) ?></td>
-          <td style="text-align:right;">
-            <div style="display:flex; justify-content:flex-end; gap:4px;">
+          <td style="text-align:center;">
+            <div style="display:flex; justify-content:center; gap:4px;">
               <button type="button" class="icon-btn" onclick="openEditVehicleModal(<?= $v['id'] ?>)" title="Edit Vehicle">
                 <span class="material-symbols-outlined">edit</span>
               </button>
@@ -187,6 +196,7 @@ $vehicles = dbFetchAll(
         <?php endif; ?>
       </tbody>
     </table>
+    </div>
 
     <!-- Table Footer / Pagination -->
     <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px; border-top:1px solid var(--surface-container-high);">

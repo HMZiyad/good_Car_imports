@@ -267,6 +267,7 @@ $allBrands = dbFetchAll("SELECT DISTINCT brand FROM vehicles WHERE brand IS NOT 
                 <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:center;">Color</th>
                 <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:center;">Grade</th>
                 <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:center;">Mileage (KM)</th>
+                <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:center;">Engine CC</th>
                 <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:center;">Trans.</th>
                 <th style="padding:16px; font-weight:600; color:var(--secondary); font-size:13px; text-transform:uppercase; text-align:center;">Price</th>
               </tr>
@@ -277,8 +278,14 @@ $allBrands = dbFetchAll("SELECT DISTINCT brand FROM vehicles WHERE brand IS NOT 
                 <td style="padding:16px; display:flex; align-items:center; gap:12px; text-align:left;">
                   <img src="<?= getUploadUrl($v['cover_photo']) ?>" alt="Car" style="width:60px; height:40px; object-fit:cover; border-radius:4px;" onerror="this.onerror=null; this.src='<?= ASSETS_URL ?>/images/placeholder-car.svg'">
                   <div>
-                    <div style="font-weight:600; font-size:14px; color:var(--on-surface);"><?= sanitize($v['car_name']) ?></div>
-                    <div style="font-size:12px; color:var(--secondary);"><?= sanitize($v['engine_spec'] ?? $v['engine_cc'].'cc') ?></div>
+                    <div style="font-weight:600; font-size:14px; color:var(--on-surface);">
+                      <?php
+                        $words = explode(' ', sanitize($v['car_name']));
+                        $firstLine = implode(' ', array_slice($words, 0, 3));
+                        $secondLine = implode(' ', array_slice($words, 3));
+                        echo $firstLine . ($secondLine ? '<br>' . $secondLine : '');
+                      ?>
+                    </div>
                   </div>
                 </td>
                 <td style="padding:16px; font-weight:500; font-size:14px;"><?= sanitize($v['package_trim'] ?? '-') ?></td>
@@ -295,6 +302,7 @@ $allBrands = dbFetchAll("SELECT DISTINCT brand FROM vehicles WHERE brand IS NOT 
                   <span style="font-size:11px; padding:2px 8px; border-radius:4px; font-weight:700; background:var(--surface-container-high); color:var(--on-surface);"><?= sanitize($v['auction_grade'] ?? '-') ?></span>
                 </td>
                 <td style="padding:16px; font-family:monospace; font-size:14px;"><?= number_format((int)$v['mileage_km']) ?></td>
+                <td style="padding:16px; font-size:14px;"><?= $v['engine_cc'] ? number_format((int)$v['engine_cc']) . 'cc' : '-' ?></td>
                 <td style="padding:16px; font-size:14px;"><?= sanitize($v['transmission'] ?? '-') ?></td>
                 <td style="padding:16px; font-weight:700; color:var(--primary);">
                   <?= $v['price_bdt'] ? formatBDT($v['price_bdt'], true) : 'Call for Price' ?>
@@ -304,7 +312,7 @@ $allBrands = dbFetchAll("SELECT DISTINCT brand FROM vehicles WHERE brand IS NOT 
               
               <?php if (empty($vehicles)): ?>
                 <tr>
-                  <td colspan="8" style="text-align: center; color: var(--secondary); padding: 64px 0;">
+                  <td colspan="9" style="text-align: center; color: var(--secondary); padding: 64px 0;">
                     No vehicles match your filters. Try adjusting your search criteria.
                   </td>
                 </tr>

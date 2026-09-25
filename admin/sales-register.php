@@ -37,6 +37,7 @@ $sales = dbFetchAll(
       </div>
     </div>
 
+    <div class="table-responsive">
     <table class="admin-table">
       <thead>
         <tr>
@@ -59,7 +60,14 @@ $sales = dbFetchAll(
                 <img src="<?= ASSETS_URL ?>/images/placeholder-car.svg" alt="Car" class="td-car-img">
               <?php endif; ?>
               <div class="td-car-info">
-                <span class="td-car-name"><?= sanitize($s['car_name']) ?></span>
+                <span class="td-car-name">
+                  <?php
+                    $words = explode(' ', sanitize($s['car_name']));
+                    $firstLine = implode(' ', array_slice($words, 0, 3));
+                    $secondLine = implode(' ', array_slice($words, 3));
+                    echo $firstLine . ($secondLine ? '<br>' . $secondLine : '');
+                  ?>
+                </span>
                 <?php if ($s['slug']): ?>
                 <a href="<?= SITE_URL ?>/vehicle.php?slug=<?= urlencode($s['slug']) ?>" target="_blank" style="font-size:11px; color:var(--primary);">View Details</a>
                 <?php endif; ?>
@@ -89,6 +97,7 @@ $sales = dbFetchAll(
         <?php endif; ?>
       </tbody>
     </table>
+    </div>
 
     <!-- Pagination -->
     <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px; border-top:1px solid var(--surface-container-high);">

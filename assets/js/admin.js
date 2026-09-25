@@ -465,6 +465,7 @@ async function openEditVehicleModal(id) {
       document.getElementById('edit_fuel_type').value = v.fuel_type || 'Petrol';
       document.getElementById('edit_status').value = v.status || 'available';
       document.getElementById('edit_price_bdt').value = v.price_bdt || '';
+      document.getElementById('edit_description').value = v.description || '';
       document.getElementById('edit_is_featured').checked = (v.is_featured == 1);
       
       openModal('editVehicleModal');

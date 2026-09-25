@@ -168,6 +168,13 @@ $statusBadgeHtml = getStatusBadge($vehicle['status']);
           </div>
         </dl>
 
+        <?php if (!empty($vehicle['description'])): ?>
+        <div class="vehicle-description" style="margin-top:40px;">
+          <h3 style="font-size:18px; margin-bottom:16px;">Description</h3>
+          <div style="line-height:1.6; color:var(--on-surface-variant); white-space:pre-wrap;"><?= sanitize($vehicle['description']) ?></div>
+        </div>
+        <?php endif; ?>
+
         <!-- Full Thumbnail Gallery -->
         <?php if (!empty($photos)): ?>
         <div class="detail-gallery-thumbnails" style="margin-top:40px;">

@@ -193,6 +193,7 @@ body {
 /* ====== MAIN CONTENT AREA ====== */
 .admin-main {
   flex: 1;
+  min-width: 0;
   margin-left: var(--sidebar-width);
   display: flex;
   flex-direction: column;
@@ -352,6 +353,7 @@ body {
 .admin-content {
   padding: var(--unit-xl);
   flex: 1;
+  min-width: 0;
 }
 
 /* Sub-navigation (Tabs) */
@@ -587,7 +589,14 @@ body {
   background: var(--surface-container-lowest);
   border: 1px solid var(--surface-container-high);
   border-radius: var(--radius-lg);
+  /* overflow-x: auto removed so toolbar doesn't scroll */
+}
+
+.table-responsive {
+  display: block;
+  width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table-toolbar {
@@ -599,13 +608,14 @@ body {
 }
 
 .admin-table {
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
   border-collapse: collapse;
   font-size: 14px;
 }
 
 .admin-table th {
-  text-align: left;
+  text-align: center;
   padding: 12px 16px;
   font-size: 12px;
   font-weight: 600;
@@ -614,12 +624,21 @@ body {
   color: var(--secondary);
   border-bottom: 1px solid var(--surface-container-high);
   background: var(--surface-container-lowest);
+  white-space: nowrap;
+}
+.admin-table th:first-child {
+  text-align: left;
 }
 
 .admin-table td {
   padding: 16px;
   border-bottom: 1px solid var(--surface-container-high);
   vertical-align: middle;
+  white-space: nowrap;
+  text-align: center;
+}
+.admin-table td:first-child {
+  text-align: left;
 }
 
 .admin-table tbody tr {

@@ -9,7 +9,7 @@
 <!-- ===== ADMIN MODALS (Shared across all pages) ===== -->
 
 <!-- Overlay -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeAllModals(event)">
+<div class="modal-overlay" id="modalOverlay">
   
   <!-- Add New Vehicle Modal -->
   <div class="modal-container" id="addVehicleModal" style="display:none;" onclick="event.stopPropagation()">
@@ -113,6 +113,10 @@
             <label class="form-label">Asking Price (BDT)</label>
             <input type="number" name="price_bdt" class="form-input" placeholder="e.g. 85000000 (8.5 Cr)">
             <small style="color:var(--secondary); font-size:11px;">Enter full amount, no commas.</small>
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-input" rows="4" placeholder="Enter vehicle description..."></textarea>
           </div>
           <div class="form-group" style="grid-column: 1 / -1; margin-top: 8px;">
             <label class="form-label" style="display:flex; align-items:center; gap:10px; cursor:pointer;">
@@ -249,6 +253,10 @@
           <div class="form-group">
             <label class="form-label">Asking Price (BDT)</label>
             <input type="number" name="price_bdt" id="edit_price_bdt" class="form-input" placeholder="e.g. 85000000">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label class="form-label">Description</label>
+            <textarea name="description" id="edit_description" class="form-input" rows="4" placeholder="Enter vehicle description..."></textarea>
           </div>
           <div class="form-group" style="grid-column: 1 / -1; margin-top: 8px;">
             <label class="form-label" style="display:flex; align-items:center; gap:10px; cursor:pointer;">

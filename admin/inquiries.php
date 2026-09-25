@@ -29,6 +29,7 @@ $tab = $_GET['tab'] ?? 'inquiries';
   <div class="card-body" style="padding: 0;">
     <?php if ($tab === 'inquiries'): ?>
       <!-- INQUIRIES TABLE -->
+      <div class="table-responsive">
       <table class="admin-table">
         <thead>
           <tr>
@@ -72,8 +73,10 @@ $tab = $_GET['tab'] ?? 'inquiries';
           <?php endif; ?>
         </tbody>
       </table>
+      </div>
     <?php else: ?>
       <!-- PRE-ORDERS TABLE -->
+      <div class="table-responsive">
       <table class="admin-table">
         <thead>
           <tr>
@@ -130,6 +133,7 @@ $tab = $_GET['tab'] ?? 'inquiries';
           <?php endif; ?>
         </tbody>
       </table>
+      </div>
     <?php endif; ?>
   </div>
 </div>

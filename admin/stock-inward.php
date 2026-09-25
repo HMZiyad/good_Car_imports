@@ -144,7 +144,8 @@ $records = dbFetchAll(
       </div>
     </div>
 
-    <table class="admin-table">
+    <div class="table-responsive">
+      <table class="admin-table">
       <thead>
         <tr>
           <th>Vehicle & Chassis</th>
@@ -159,7 +160,14 @@ $records = dbFetchAll(
         <?php foreach ($records as $r): ?>
         <tr>
           <td>
-            <div style="font-weight:600; color:var(--on-surface); margin-bottom:2px;"><?= sanitize($r['car_name']) ?></div>
+            <div style="font-weight:600; color:var(--on-surface); margin-bottom:2px;">
+              <?php
+                $words = explode(' ', sanitize($r['car_name']));
+                $firstLine = implode(' ', array_slice($words, 0, 3));
+                $secondLine = implode(' ', array_slice($words, 3));
+                echo $firstLine . ($secondLine ? '<br>' . $secondLine : '');
+              ?>
+            </div>
             <div style="font-size:12px; color:var(--secondary); margin-bottom:6px;"><?= (int)$r['year_of_manufacture'] ?> • <?= sanitize($r['color_name']) ?> • <?= sanitize($r['package_trim']) ?></div>
             <span class="chassis-pill"><?= sanitize($r['chassis_code']) ?></span>
           </td>
@@ -211,6 +219,7 @@ $records = dbFetchAll(
         <?php endif; ?>
       </tbody>
     </table>
+    </div>
 
     <!-- Table Footer / Pagination -->
     <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px; border-top:1px solid var(--surface-container-high);">
