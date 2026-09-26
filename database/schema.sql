@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `vehicles` (
   `fuel_type` ENUM('Petrol', 'Diesel', 'Hybrid', 'PHEV', 'Electric', 'Octane') DEFAULT 'Petrol',
   `seats` TINYINT UNSIGNED DEFAULT 5,
   `drive_train` VARCHAR(20) DEFAULT '2WD',
-  `body_type` ENUM('SUV', 'Sedan', 'Hatchback', 'MPV', 'Crossover', 'Wagon', 'Coupe', 'Pickup') DEFAULT 'SUV',
+  `body_type` ENUM('SUV', 'Sedan', 'Hatchback', 'MPV', 'Crossover', 'Wagon', 'Coupe', 'Pickup', 'Microbus', 'HIACE-Van') DEFAULT 'SUV',
   `brand` VARCHAR(50) DEFAULT NULL,
   `status` ENUM('available', 'port_clearance', 'vessel_transit', 'pre_booked', 'sold', 'reserved') NOT NULL DEFAULT 'available',
   `price_bdt` BIGINT UNSIGNED DEFAULT NULL COMMENT 'Price in BDT paisa (divide by 100 for display)',

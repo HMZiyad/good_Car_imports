@@ -310,7 +310,7 @@ CREATE TABLE `vehicles` (
   `fuel_type` enum('Petrol','Diesel','Hybrid','PHEV','Electric','Octane') COLLATE utf8mb4_unicode_ci DEFAULT 'Petrol',
   `seats` tinyint unsigned DEFAULT '5',
   `drive_train` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT '2WD',
-  `body_type` enum('SUV','Sedan','Hatchback','MPV','Crossover','Wagon','Coupe','Pickup') COLLATE utf8mb4_unicode_ci DEFAULT 'SUV',
+  `body_type` enum('SUV','Sedan','Hatchback','MPV','Crossover','Wagon','Coupe','Pickup','Microbus','HIACE-Van') COLLATE utf8mb4_unicode_ci DEFAULT 'SUV',
   `brand` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` enum('available','port_clearance','vessel_transit','pre_booked','sold','reserved') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'available',
   `price_bdt` bigint unsigned DEFAULT NULL COMMENT 'Price in BDT paisa (divide by 100 for display)',
