@@ -123,7 +123,7 @@ $allBrands = dbFetchAll("SELECT DISTINCT brand FROM vehicles WHERE brand IS NOT 
           <div class="filter-group">
             <label>Body Type</label>
             <div class="filter-checkboxes">
-              <?php foreach (['SUV', 'Sedan', 'Hatchback', 'MPV', 'Crossover', 'Microbus'] as $type): ?>
+              <?php foreach (['SUV', 'Sedan', 'Hatchback', 'MPV', 'Crossover', 'Microbus','HIACE-Van'] as $type): ?>
                 <label class="filter-checkbox">
                   <input type="checkbox" name="body[]" value="<?= $type ?>"
                          <?= in_array($type, (array)$body) ? 'checked' : '' ?>>
