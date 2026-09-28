@@ -87,6 +87,7 @@
               <option value="MPV">MPV</option>
               <option value="Crossover">Crossover</option>
               <option value="Microbus">Microbus</option>
+              <option value="HIACE-Van">HIACE-Van</option>
             </select>
           </div>
           <div class="form-group mandatory-field">
@@ -228,6 +229,7 @@
               <option value="MPV">MPV</option>
               <option value="Crossover">Crossover</option>
               <option value="Microbus">Microbus</option>
+              <option value="HIACE-Van">HIACE-Van</option>
             </select>
           </div>
           <div class="form-group mandatory-field">
